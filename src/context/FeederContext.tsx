@@ -1,10 +1,4 @@
-import React, {
-    createContext,
-    useContext,
-    useState,
-    ReactNode,
-    useEffect,
-} from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 import { FeederData, getDummyData } from "../utils/types";
 
 // Define the shape of the context state
