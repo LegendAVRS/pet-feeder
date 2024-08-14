@@ -1,10 +1,15 @@
-import { useFeederContext } from "./context/FeederContext";
+import { ErrorBoundary } from "react-error-boundary";
+import useData from "./hooks/useData";
 import NavBar from "./NavBar";
 import { getImagesInGroup } from "./utils/helpers";
+import { GALLERY_URL, GalleryData } from "./utils/types";
 
 const Gallery = () => {
-    const { data } = useFeederContext();
-    const imagesInGroup = getImagesInGroup(data.capturedImages);
+    const { data } = useData<GalleryData>(GALLERY_URL);
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+    const imagesInGroup = getImagesInGroup(data.images);
     return (
         <>
             <NavBar label="Gallery"></NavBar>
@@ -15,9 +20,9 @@ const Gallery = () => {
                         <div className="grid grid-cols-3 gap-1">
                             {imagesInGroup[dateKey].map((image, ind) => (
                                 <img
-                                    src={image.src}
+                                    src={image.image_url}
                                     alt=""
-                                    key={`${image.src} ${ind}`}
+                                    key={`${image.image_url} ${ind}`}
                                 />
                             ))}
                         </div>

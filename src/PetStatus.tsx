@@ -1,17 +1,42 @@
-import { useState } from "react";
-import { useFeederContext } from "./context/FeederContext";
+import { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import { getLineChart } from "./utils/helpers";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto"; // ADD THIS
 import DatePicker from "react-datepicker";
+import { FEED_HISTORY_URL, PetStatusData } from "./utils/types";
+import useData from "./hooks/useData";
 
 const PetStatus = () => {
-    const { data } = useFeederContext();
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
+    const { data, refreshData } = useData<PetStatusData>(FEED_HISTORY_URL, {
+        start: startDate,
+        end: endDate,
+    });
 
-    const foodChart = getLineChart(startDate, endDate, data.feedHistory);
+    useEffect(() => {
+        refreshData();
+    }, [startDate, endDate]);
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+
+    const foodChart = getLineChart(
+        startDate,
+        endDate,
+        data.feedList,
+        "Grams",
+        1000
+    );
+    const waterChart = getLineChart(
+        startDate,
+        endDate,
+        data.waterList,
+        "Milliliters",
+        1000
+    );
     return (
         <>
             <NavBar label="Pet Status"></NavBar>
@@ -41,12 +66,15 @@ const PetStatus = () => {
                 <div className="flex justify-between items-center">
                     <h3 className="text-2xl font-semibold">Eating time</h3>
                 </div>
-                <Line data={foodChart} />
+                <Line data={foodChart.chartData} options={foodChart.options} />
                 <div className="h-4"></div>
                 <div className="flex justify-between items-center">
                     <h3 className="text-2xl font-semibold">Water comsumed</h3>
                 </div>
-                <canvas id="water-chart"></canvas>
+                <Line
+                    data={waterChart.chartData}
+                    options={waterChart.options}
+                />
             </section>
         </>
     );

@@ -1,6 +1,12 @@
+import useData from "./hooks/useData";
 import NavBar from "./NavBar";
+import { VIDEO_URL, VideoData } from "./utils/types";
 
 const VideoCall = () => {
+    const { data } = useData<VideoData>(VIDEO_URL);
+    if (!data) {
+        return <div>Loading...</div>;
+    }
     return (
         <>
             <NavBar label="Pet Call"></NavBar>

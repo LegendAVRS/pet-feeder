@@ -1,6 +1,15 @@
+import { ErrorBoundary } from "react-error-boundary";
+import useData from "./hooks/useData";
 import NavBar from "./NavBar";
+import { DevData, DEVICE_URL } from "./utils/types";
+import Log from "./Log";
+import MiniLog from "./MiniLog";
 
 const Status = () => {
+    const { data } = useData<DevData>(DEVICE_URL);
+    if (!data) {
+        return <div>Loading...</div>;
+    }
     return (
         <>
             <NavBar label="Device Status"></NavBar>
@@ -18,45 +27,21 @@ const Status = () => {
                     <h3 className=" font-bold text-2xl">Device information</h3>
                     <div className="h-1"></div>
                     <p className="text-lg font-medium">Software version</p>
-                    <p className="text-md font-medium">0.0.1-alpha</p>
+                    <p className="text-md font-medium">{data.software}</p>
                     <div className="h-1"></div>
                     <p className="text-lg font-medium">IP address</p>
-                    <p className="text-md font-medium">127.0.0.1</p>
+                    <p className="text-md font-medium">{data.ip}</p>
                     <div className="h-1"></div>
-                    <p className="text-lg font-medium">Up time</p>
-                    <p className="text-md font-medium">17:17:17</p>
                     <div className="h-1"></div>
                     <p className="text-lg font-medium">Board</p>
-                    <p className="text-md font-medium">Arduino Uno</p>
+                    <p className="text-md font-medium">{data.board}</p>
                     <div className="h-1"></div>
                     <p className="text-lg font-medium">Wifi</p>
-                    <p className="text-md font-medium">HCMUS-Public</p>
+                    <p className="text-md font-medium">{data.wifi}</p>
                     <div className="h-1"></div>
-                    <p className="text-lg font-medium">Wifi hardware</p>
-                    <p className="text-md font-medium">ESP</p>
                 </div>
-                <div className="h-4"></div>
-                <section className="p-4 rounded-2xl border border-slate-300">
-                    <div className="flex justify-between items-center">
-                        <p className="font-semibold text-2xl">Device's log</p>
-                        <a href="./device-log.html" className="text-2xl">
-                            →
-                        </a>
-                    </div>
-                    <div className="h-4"></div>
-                    <div className="p-4 rounded-md bg-gray-300">
-                        <code>A whole bunch of logs</code>
-                        <code>A whole bunch of logs</code>
-                        <code>A whole bunch of logs</code>
-                        <code>A whole bunch of logs</code>
-                        <code>A whole bunch of logs</code>
-                        <code>A whole bunch of logs</code>
-                        <code>A whole bunch of logs</code>
-                        <code>A whole bunch of logs</code>
-                        <code>A whole bunch of logs</code>
-                    </div>
-                </section>
             </section>
+            <MiniLog></MiniLog>
         </>
     );
 };

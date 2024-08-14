@@ -1,68 +1,132 @@
-import { Link } from "react-router-dom";
-import { useFeederContext } from "./context/FeederContext";
 import NavBar from "./NavBar";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { postRequest, deleteRequest } from "./utils/helpers";
+import { useRef, useState } from "react";
+import AddSchedule from "./AddSchedule";
+import { FEED_SCHEDULE_URL, ScheduleData } from "./utils/types";
+import useData from "./hooks/useData";
 
 const ChangeSchedule = () => {
-    const { data, setData } = useFeederContext();
-    const schedule = data.feedSchdule;
-    const handleCheckChange = (index: number) => {
+    // Initialize hooks at the top level of the component
+    const { data, setData, refreshData } =
+        useData<ScheduleData>(FEED_SCHEDULE_URL);
+    console.log(data);
+    const [chosenIndex, setChosenIndex] = useState(-1);
+    const modalRef = useRef<HTMLDialogElement>(null);
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+
+    const schedule = data.schedule;
+
+    const handleCheckChange = async (index: number) => {
         const dataCopy = { ...data };
-        dataCopy.feedSchdule[index].isOn = !dataCopy.feedSchdule[index].isOn;
+        dataCopy.schedule[index].isOn = !dataCopy.schedule[index].isOn;
+
+        // Update the data locally
         setData(dataCopy);
+
+        // Send the update to the server and wait for the response
+        await postRequest(
+            dataCopy.schedule[index],
+            `${FEED_SCHEDULE_URL}/${dataCopy.schedule[index].id}`
+        );
+
+        refreshData();
     };
-    const handleDeleteThingy = (index: number) => {
+
+    const handleDeleteThingy = async (index: number) => {
         const dataCopy = { ...data };
-        dataCopy.feedSchdule.splice(index, 1);
-        setData(dataCopy);
+
+        // Send the delete request to the server and wait for the response
+        await deleteRequest(
+            `${FEED_SCHEDULE_URL}/${dataCopy.schedule[index].id}`
+        );
+
+        refreshData();
     };
+
+    const handleEditThingy = (index: number) => {
+        setChosenIndex(index);
+        modalRef.current?.showModal();
+    };
+
     return (
-        <>
-            <NavBar label="Feed Schedule"></NavBar>
-            <section className="px-6 flex flex-col gap-2">
-                {schedule.map((thingy, index) => (
-                    <div className="p-4 rounded-2xl border border-slate-300">
-                        <div className="flex items-center justify-between">
-                            <p className="text-2xl font-semibold">
-                                {thingy.time}
-                            </p>
-                            <XMarkIcon
-                                className="cursor-pointer"
-                                onClick={() => handleDeleteThingy(index)}
-                                width={30}
-                            ></XMarkIcon>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <p>Amount: {thingy.value}g</p>
-                            <div className="form-control">
-                                <label className="label cursor-pointer flex gap-2">
-                                    <span className="label-text">
-                                        {thingy.isOn ? "On" : "Off"}
-                                    </span>
-                                    <input
-                                        type="checkbox"
-                                        className="toggle"
-                                        checked={thingy.isOn}
-                                        onChange={() =>
-                                            handleCheckChange(index)
-                                        }
-                                    />
-                                </label>
+        <section className="h-screen w-screen overflow-hidden">
+            <div className="h-screen w-screen overflow-hidden">
+                <NavBar label="Feed Schedule">
+                    <button
+                        role="button"
+                        className="font-semibold p-4 bg-black text-white rounded-full"
+                        onClick={() => {
+                            setChosenIndex(-1);
+                            modalRef.current?.showModal();
+                        }}
+                    >
+                        <p className="w-full text-xl font-bold text-center">
+                            + Add schedule
+                        </p>
+                    </button>
+                </NavBar>
+
+                <section className="px-6 flex flex-col gap-2 overflow-y-auto max-h-[100%]">
+                    {schedule.map((thingy, index) => (
+                        <div
+                            className="p-4 rounded-2xl border border-slate-300"
+                            onClick={() => handleEditThingy(index)}
+                            key={index}
+                        >
+                            <div className="flex items-center justify-between">
+                                <p className="text-2xl font-semibold">
+                                    {thingy.time}
+                                </p>
+                                <XMarkIcon
+                                    className="cursor-pointer"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteThingy(index);
+                                    }}
+                                    width={30}
+                                ></XMarkIcon>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <p>Amount: {thingy.value}g</p>
+                                <div className="form-control">
+                                    <label className="label cursor-pointer flex gap-2">
+                                        <span className="label-text">
+                                            {thingy.isOn ? "On" : "Off"}
+                                        </span>
+                                        <input
+                                            type="checkbox"
+                                            className="toggle"
+                                            checked={thingy.isOn}
+                                            onChange={() =>
+                                                handleCheckChange(index)
+                                            }
+                                            onClick={(e) => e.stopPropagation()}
+                                        />
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
-                <Link
-                    role="button"
-                    to="/add-schedule"
-                    className="fixed bottom-4 left-4 right-4 font-semibold p-4 bg-black text-white rounded-full"
-                >
-                    <p className="w-full text-xl font-bold text-center">
-                        + Add schedule
-                    </p>
-                </Link>
-            </section>
-        </>
+                    ))}
+                </section>
+            </div>
+            <dialog className="modal" id="cum" ref={modalRef}>
+                <div className="modal-box h-full">
+                    <AddSchedule
+                        modalRef={modalRef}
+                        chosenSchedule={schedule[chosenIndex]}
+                        isAdd={chosenIndex === -1}
+                        refreshData={refreshData}
+                    ></AddSchedule>
+                </div>
+                <form method="dialog" className="modal-backdrop w-screen">
+                    <button className="cursor-default">close</button>
+                </form>
+            </dialog>
+        </section>
     );
 };
 

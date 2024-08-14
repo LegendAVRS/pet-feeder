@@ -1,17 +1,42 @@
-export type FeederData = {
-    foodAmount: number;
-    waterAmount: number;
-    timeAutoFeedDuration: number;
-    feedSchdule: FeedData[];
-    temperature: number;
-    humidity: number;
-    battery: number;
-    capturedImages: ImageData[];
-    feedHistory: ValueTime[];
-    environmentHistory: {
-        temperatureHistory: ValueTime[];
-        humidityHistory: ValueTime[];
-    };
+export type HomeData = {
+    food: number;
+    water: number;
+    duration: number;
+    temp: number;
+    humid: number;
+    nextFeed: FeedData;
+    prevFeed: FeedData;
+    lastImg: ImageData;
+} 
+
+export type VideoData = {
+    video_url: string;
+    time: number;
+};
+
+export type DevData = {
+    software: string;
+    ip: string;
+    board: string;
+    wifi: string
+}
+
+export type LogData = {
+    logs: string[];
+}
+
+export type EnvironmentData = {
+    tempList: ValueTime[];
+    humidList: ValueTime[];
+};
+
+export type PetStatusData = {
+    feedList: ValueTime[];
+    waterList: ValueTime[];
+};
+
+export type ScheduleData = {
+    schedule: FeedData[];
 };
 
 export type ValueTime = {
@@ -19,71 +44,34 @@ export type ValueTime = {
     time: number;
 };
 
-export type FeedData = ValueTime & {
+export type FeedData = {
+    value: number; 
+    time: string;// 0505 would be 05:05
     isOn: boolean;
+    id: number;
 };
 
 export type ImageData = {
-    src: string;
-    capturedTime: number;
+    image_url: string;
+    time: number;
 };
 
-export const getDummyData = (): FeederData => {
-    const dummyFeederData: FeederData = {
-        foodAmount: 500, // in grams
-        waterAmount: 1000, // in milliliters
-        timeAutoFeedDuration: 30, // in minutes
-        feedSchdule: [
-            {
-                value: 100, // in grams
-                time: 1625078400, // UNIX timestamp for 2021-07-01T12:00:00Z
-                isOn: true,
-            },
-            {
-                value: 150, // in grams
-                time: 1625114400, // UNIX timestamp for 2021-07-01T22:00:00Z,
-                isOn: true,
-            },
-        ],
-        temperature: 24, // in Celsius
-        humidity: 60, // in percentage
-        battery: 80, // in percentage
-        capturedImages: [
-            {
-                src: "https://i.kym-cdn.com/photos/images/original/002/269/118/f8c.jpg",
-                capturedTime: 1625078400, // UNIX timestamp for 2021-07-01T12:00:00Z
-            },
-            {
-                src: "https://i.kym-cdn.com/photos/images/original/002/269/118/f8c.jpg",
-                capturedTime: 1625114400, // UNIX timestamp for 2021-07-01T22:00:00Z
-            },
-        ],
-        feedHistory: [
-            {
-                value: 100, // in grams
-                time: 1625078400, // UNIX timestamp for 2021-07-01T12:00:00Z
-            },
-            {
-                value: 150, // in grams
-                time: 1625114400, // UNIX timestamp for 2021-07-01T22:00:00Z,
-            },
-        ],
-        environmentHistory: {
-            temperatureHistory: [
-                { value: 24, time: 1625078400 }, // in Celsius
-                { value: 23, time: 1625082000 },
-                { value: 22, time: 1625085600 },
-                { value: 24, time: 1625089200 },
-                { value: 25, time: 1625092800 },
-            ],
-            humidityHistory: [
-                { value: 60, time: 1625078400 }, // in percentage
-                { value: 59, time: 1625082000 },
-                { value: 58, time: 1625085600 },
-                { value: 60, time: 1625089200 },
-                { value: 61, time: 1625092800 },
-            ],
-        },
-    };
-    return dummyFeederData;
+export type GalleryData = {
+    images: ImageData[];
 };
+
+export const URL_HEADER = "http://localhost:3000"
+export const HOME_DATA_URL = "/api/homeData"
+export const GALLERY_URL = "/api/gallery/"
+export const FEED_HISTORY_URL = "/api/foodDrink/"
+export const ENVIRONMENT_HISTORY_URL = "/api/environment/"
+export const FEED_SCHEDULE_URL = "/api/schedule"
+export const LOG_URL = "/api/log"
+export const VIDEO_URL = "/api/video"
+export const DEVICE_URL = "/api/status"
+
+export const FOOD_WARNING_THRESHOLD = 500
+export const WATER_WARNING_THRESHOLD = 500
+export const TEMPERATURE_WARNING_THRESHOLD = 30
+export const HUMIDITY_WARNING_THRESHOLD = 80
+export const TIME_FETCH_INTERVAL = 300000 // 5 minutes

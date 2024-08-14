@@ -1,32 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Line } from "react-chartjs-2";
-import { useFeederContext } from "./context/FeederContext";
-import "chart.js/auto"; // ADD THIS
+import "chart.js/auto";
 import { getLineChart } from "./utils/helpers";
+import { ENVIRONMENT_HISTORY_URL, EnvironmentData } from "./utils/types";
+import useData from "./hooks/useData";
 
 const Environment = () => {
-    const { data } = useFeederContext();
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
+    const { data, refreshData } = useData<EnvironmentData>(
+        ENVIRONMENT_HISTORY_URL,
+        { start: startDate, end: endDate }
+    );
+
+    useEffect(() => {
+        refreshData();
+    }, [startDate, endDate]);
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
 
     const temperatureChart = getLineChart(
         startDate,
         endDate,
-        data.environmentHistory.temperatureHistory
+        data.tempList,
+        "Celsius"
     );
-    const humidityChart = getLineChart(
-        startDate,
-        endDate,
-        data.environmentHistory.humidityHistory
-    );
+    const humidityChart = getLineChart(startDate, endDate, data.humidList, "%");
 
-    // Cleanup logic to destroy chart instances
     return (
-        <section className="px-6">
-            <div className="flex text-xl font-bold items-center gap-2">
+        <section className="px-6 mt-2">
+            <div className="flex text-lg font-bold items-center gap-2">
                 <p>From:</p>
+
                 <DatePicker
                     selected={startDate}
                     onChange={(date) => setStartDate(date)}
@@ -50,12 +59,18 @@ const Environment = () => {
             <div className="flex justify-between items-center">
                 <h3 className="text-2xl font-semibold">Temperature</h3>
             </div>
-            <Line data={temperatureChart} />
+            <Line
+                data={temperatureChart.chartData}
+                options={temperatureChart.options}
+            />
             <div className="h-4"></div>
             <div className="flex justify-between items-center">
                 <h3 className="text-2xl font-semibold">Humidity</h3>
             </div>
-            <Line data={humidityChart} />
+            <Line
+                data={humidityChart.chartData}
+                options={humidityChart.options}
+            />
         </section>
     );
 };
