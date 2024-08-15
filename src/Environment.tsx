@@ -6,11 +6,12 @@ import "chart.js/auto";
 import { getLineChart } from "./utils/helpers";
 import { ENVIRONMENT_HISTORY_URL, EnvironmentData } from "./utils/types";
 import useData from "./hooks/useData";
+import LoadingPage from "./LoadingPage";
 
 const Environment = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
-    const { data, refreshData } = useData<EnvironmentData>(
+    const { data, refreshData, error } = useData<EnvironmentData>(
         ENVIRONMENT_HISTORY_URL,
         { start: startDate, end: endDate }
     );
@@ -19,8 +20,12 @@ const Environment = () => {
         refreshData();
     }, [startDate, endDate]);
 
+    if (error) {
+        throw new Error(error);
+    }
+
     if (!data) {
-        return <div>Loading...</div>;
+        return <LoadingPage></LoadingPage>;
     }
 
     const temperatureChart = getLineChart(

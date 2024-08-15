@@ -11,9 +11,18 @@ import Environment from "./Environment.tsx";
 import Log from "./Log.tsx";
 import PetStatus from "./PetStatus.tsx";
 import Status from "./Status.tsx";
+import ErrorPage from "./ErrorPage.tsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => (
-    <ErrorBoundary fallback={<div>Error loading main page.</div>}>
+    <ErrorBoundary
+        fallbackRender={({ error }) => (
+            <ErrorPage
+                error={error.message || "An unexpected error occurred"}
+            />
+        )}
+    >
         <Router>
             <Routes>
                 <Route path="/" element={<MainPage />} />
@@ -26,6 +35,14 @@ const App = () => (
                 <Route path="/video-call" element={<VideoCall />} />
             </Routes>
         </Router>
+        <ToastContainer
+            position="bottom-right" // Position of the toast
+            autoClose={3000} // Duration of toast visibility
+            hideProgressBar={true} // Show progress bar
+            closeOnClick
+            pauseOnFocusLoss={false}
+            pauseOnHover={false}
+        ></ToastContainer>
     </ErrorBoundary>
 );
 

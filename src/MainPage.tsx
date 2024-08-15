@@ -23,14 +23,20 @@ import {
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import useData from "./hooks/useData";
 import { InformationCircleIcon } from "@heroicons/react/16/solid";
+import LoadingPage from "./LoadingPage";
+import { toast } from "react-toastify";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const MainPage = () => {
-    const { data, refreshData } = useData<HomeData>(HOME_DATA_URL);
+    const { data, error, refreshData } = useData<HomeData>(HOME_DATA_URL);
+
+    if (error) {
+        throw new Error(error);
+    }
 
     if (!data) {
-        return <div>Loading...</div>;
+        return <LoadingPage></LoadingPage>;
     }
 
     const nextFeedData = data.nextFeed;
@@ -68,8 +74,13 @@ const MainPage = () => {
         );
 
     const handleFeedNow = async () => {
-        await postRequest(null, FEED_NOW_URL);
-        refreshData();
+        try {
+            await postRequest(null, FEED_NOW_URL);
+            toast.success("Success: Feed now success");
+            refreshData();
+        } catch (error: any) {
+            toast.error("Error: Failed to feed");
+        }
     };
     return (
         <>

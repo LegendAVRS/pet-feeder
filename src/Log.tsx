@@ -2,11 +2,17 @@ import { ErrorBoundary } from "react-error-boundary";
 import useData from "./hooks/useData";
 import NavBar from "./NavBar";
 import { LOG_URL, LogData } from "./utils/types";
+import LoadingPage from "./LoadingPage";
 
 const Log = () => {
-    const { data } = useData<LogData>(LOG_URL);
+    const { data, error } = useData<LogData>(LOG_URL);
+
+    if (error) {
+        throw new Error(error);
+    }
+
     if (!data) {
-        return <div>Loading...</div>;
+        return <LoadingPage />;
     }
     return (
         <>

@@ -6,21 +6,29 @@ import "chart.js/auto"; // ADD THIS
 import DatePicker from "react-datepicker";
 import { FEED_HISTORY_URL, PetStatusData } from "./utils/types";
 import useData from "./hooks/useData";
+import LoadingPage from "./LoadingPage";
 
 const PetStatus = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
-    const { data, refreshData } = useData<PetStatusData>(FEED_HISTORY_URL, {
-        start: startDate,
-        end: endDate,
-    });
+    const { data, refreshData, error } = useData<PetStatusData>(
+        FEED_HISTORY_URL,
+        {
+            start: startDate,
+            end: endDate,
+        }
+    );
+
+    if (error) {
+        throw new Error(error);
+    }
 
     useEffect(() => {
         refreshData();
     }, [startDate, endDate]);
 
     if (!data) {
-        return <div>Loading...</div>;
+        return <LoadingPage></LoadingPage>;
     }
 
     const foodChart = getLineChart(

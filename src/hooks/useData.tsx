@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TIME_FETCH_INTERVAL, URL_HEADER } from "../utils/types";
 
 const useData = <T,>(
@@ -8,35 +8,56 @@ const useData = <T,>(
     const [data, setData] = useState<T | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    const fetchWithTimeout = async (
+        url: string,
+        options: RequestInit = {},
+        timeout: number = 3000
+    ) => {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+        options.signal = controller.signal;
+
+        try {
+            const response = await fetch(url, options);
+            clearTimeout(id);
+            return response;
+        } catch (error) {
+            if (controller.signal.aborted) {
+                setError("Request timed out");
+                throw new Error("Request timed out");
+            }
+            throw error;
+        }
+    };
+
     const fetchData = useCallback(async () => {
         try {
+            const url = URL_HEADER + endpoint;
+            let response;
+
             if (!timeRange) {
-                const response = await fetch(URL_HEADER + endpoint);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch data");
-                }
-                const jsonData = await response.json();
-                setData(jsonData as T);
-                return;
+                response = await fetchWithTimeout(url);
+            } else {
+                response = await fetchWithTimeout(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(timeRange),
+                });
             }
 
-            const response = await fetch(URL_HEADER + endpoint, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(timeRange),
-            });
-
-            if (!response.ok) {
+            if (!response!.ok) {
+                setError("Failed to fetch data");
                 throw new Error("Failed to fetch data");
             }
-            const jsonData = await response.json();
+
+            const jsonData = await response!.json();
             setData(jsonData as T);
         } catch (err: any) {
             setError(err.message);
         }
-    }, [endpoint]);
+    }, [endpoint, timeRange]);
 
     useEffect(() => {
         fetchData();

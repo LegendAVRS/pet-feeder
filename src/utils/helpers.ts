@@ -174,8 +174,8 @@ export const postRequest = async (data: any, endpoint: string) => {
 
     const responseData = await response.json();
     console.log('Success:', responseData);
-  } catch (error) {
-    console.error('Error:', error);
+  } catch (error: any) {
+    throw new Error(error);
   }
 };
 

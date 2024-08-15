@@ -3,11 +3,15 @@ import useData from "./hooks/useData";
 import NavBar from "./NavBar";
 import { getImagesInGroup } from "./utils/helpers";
 import { GALLERY_URL, GalleryData } from "./utils/types";
+import LoadingPage from "./LoadingPage";
 
 const Gallery = () => {
-    const { data } = useData<GalleryData>(GALLERY_URL);
+    const { data, error } = useData<GalleryData>(GALLERY_URL);
+    if (error) {
+        throw new Error(error);
+    }
     if (!data) {
-        return <div>Loading...</div>;
+        return <LoadingPage></LoadingPage>;
     }
     const imagesInGroup = getImagesInGroup(data.images);
     return (

@@ -69,6 +69,7 @@ export const FEED_SCHEDULE_URL = "/api/schedule"
 export const LOG_URL = "/api/log"
 export const VIDEO_URL = "/api/video"
 export const DEVICE_URL = "/api/status"
+export const FEED_NOW_URL = "/api/feedNow"
 
 export const FOOD_WARNING_THRESHOLD = 500
 export const WATER_WARNING_THRESHOLD = 500

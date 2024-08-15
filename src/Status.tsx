@@ -4,11 +4,16 @@ import NavBar from "./NavBar";
 import { DevData, DEVICE_URL } from "./utils/types";
 import Log from "./Log";
 import MiniLog from "./MiniLog";
+import LoadingPage from "./LoadingPage";
 
 const Status = () => {
-    const { data } = useData<DevData>(DEVICE_URL);
+    const { data, error } = useData<DevData>(DEVICE_URL);
+
+    if (error) {
+        throw new Error(error);
+    }
     if (!data) {
-        return <div>Loading...</div>;
+        return <LoadingPage></LoadingPage>;
     }
     return (
         <>

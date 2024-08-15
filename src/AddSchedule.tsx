@@ -1,6 +1,8 @@
 import { RefObject, useEffect, useState } from "react";
 import { postRequest } from "./utils/helpers"; // import the postRequest function
 import { FEED_SCHEDULE_URL, FeedData } from "./utils/types";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Props {
     isAdd: boolean;
@@ -17,41 +19,51 @@ const AddSchedule = ({
 }: Props) => {
     const [loading, setLoading] = useState(false);
     const handleAddSchedule = async () => {
-        const hourStr = hour < 10 ? "0" + hour : hour.toString();
-        const minuteStr = minute < 10 ? "0" + minute : minute.toString();
-        setLoading(true);
-        await postRequest(
-            {
-                time: `${hourStr}${minuteStr}`,
-                value: feedAmount,
-                duration: feedDuration,
-                isOn: true,
-            },
-            FEED_SCHEDULE_URL
-        );
-        setLoading(false);
-        refreshData();
-        modalRef.current?.close();
+        try {
+            const hourStr = hour < 10 ? "0" + hour : hour.toString();
+            const minuteStr = minute < 10 ? "0" + minute : minute.toString();
+            setLoading(true);
+            await postRequest(
+                {
+                    time: `${hourStr}${minuteStr}`,
+                    value: feedAmount,
+                    duration: feedDuration,
+                    isOn: true,
+                },
+                FEED_SCHEDULE_URL
+            );
+            setLoading(false);
+            refreshData();
+            toast.success("Success: Edited schedule");
+            modalRef.current?.close();
+        } catch (error) {
+            toast.error("Error: Failed to edit schedule");
+        }
     };
 
     const handleEditSchedule = async () => {
         // convert hour and minute to the correct format string
-        const hourStr = hour < 10 ? "0" + hour : hour.toString();
-        const minuteStr = minute < 10 ? "0" + minute : minute.toString();
-        setLoading(true);
-        await postRequest(
-            {
-                id: chosenSchedule!.id,
-                time: `${hourStr}${minuteStr}`,
-                value: feedAmount,
-                duration: feedDuration,
-                isOn: chosenSchedule!.isOn,
-            },
-            FEED_SCHEDULE_URL + `/${chosenSchedule!.id}`
-        );
-        setLoading(false);
-        refreshData();
-        modalRef.current?.close();
+        try {
+            const hourStr = hour < 10 ? "0" + hour : hour.toString();
+            const minuteStr = minute < 10 ? "0" + minute : minute.toString();
+            setLoading(true);
+            await postRequest(
+                {
+                    id: chosenSchedule!.id,
+                    time: `${hourStr}${minuteStr}`,
+                    value: feedAmount,
+                    duration: feedDuration,
+                    isOn: chosenSchedule!.isOn,
+                },
+                FEED_SCHEDULE_URL + `/${chosenSchedule!.id}`
+            );
+            setLoading(false);
+            refreshData();
+            toast.success("Success: Edited schedule");
+            modalRef.current?.close();
+        } catch (error) {
+            toast.error("Error: Failed to edit schedule");
+        }
     };
 
     const defaultVal =

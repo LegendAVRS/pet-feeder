@@ -1,11 +1,15 @@
 import useData from "./hooks/useData";
+import LoadingPage from "./LoadingPage";
 import NavBar from "./NavBar";
 import { VIDEO_URL, VideoData } from "./utils/types";
 
 const VideoCall = () => {
-    const { data } = useData<VideoData>(VIDEO_URL);
+    const { data, error } = useData<VideoData>(VIDEO_URL);
+    if (error) {
+        throw new Error(error);
+    }
     if (!data) {
-        return <div>Loading...</div>;
+        return <LoadingPage></LoadingPage>;
     }
     return (
         <>
