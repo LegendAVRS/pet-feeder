@@ -13,6 +13,7 @@ const Gallery = () => {
     if (!data) {
         return <LoadingPage></LoadingPage>;
     }
+    console.log(data);
     const imagesInGroup = getImagesInGroup(data.images);
     return (
         <>

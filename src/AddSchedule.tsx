@@ -3,6 +3,7 @@ import { postRequest } from "./utils/helpers"; // import the postRequest functio
 import { FEED_SCHEDULE_URL, FeedData } from "./utils/types";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { XMarkIcon } from "@heroicons/react/16/solid";
 
 interface Props {
     isAdd: boolean;
@@ -93,28 +94,32 @@ const AddSchedule = ({
     }, [isAdd]);
 
     return (
-        <section className="">
-            <h1 className="font-bold text-3xl">Add/Edit</h1>
+        <section className="relative">
+            <h1 className="font-bold text-3xl">Add / Edit</h1>
             <div className="flex items-center justify-center gap-4 h-[20vh]">
                 <input
-                    type="number"
-                    className="aspect-square w-32 flex items-center justify-center rounded-2xl border border-slate-300 font-semibold text-[5rem]"
+                    type="text"
+                    className="aspect-square w-32 flex items-center justify-center rounded-2xl border border-slate-300 font-semibold text-center text-[5rem]"
                     onChange={(e) => {
-                        setHour(parseInt(e.target.value));
+                        const value = parseInt(e.target.value);
+                        if (!isNaN(value) && value >= 0 && value <= 23) {
+                            setHour(value);
+                        }
                     }}
                     value={hour}
-                    min={0}
-                    max={23}
+                    maxLength={2} // optional: restrict input to 2 characters
                 ></input>
                 <input
-                    type="number"
-                    className="aspect-square w-32 flex items-center justify-center rounded-2xl border border-slate-300 font-semibold text-[5rem]"
+                    type="text"
+                    className="aspect-square w-32 flex items-center justify-center rounded-2xl border text-center border-slate-300 font-semibold text-[5rem]"
                     onChange={(e) => {
-                        setMinute(parseInt(e.target.value));
+                        const value = parseInt(e.target.value);
+                        if (!isNaN(value) && value >= 0 && value <= 59) {
+                            setMinute(value);
+                        }
                     }}
                     value={minute}
-                    min={0}
-                    max={59}
+                    maxLength={2} // optional: restrict input to 2 characters
                 ></input>
             </div>
             <div className="p-4 rounded-2xl border border-slate-300 flex items-center justify-between">
@@ -170,6 +175,13 @@ const AddSchedule = ({
                     <span className="loading loading-spinner loading-md"></span>
                 )}
             </button>
+            <XMarkIcon
+                className="absolute top-1 right-1 cursor-pointer"
+                width="30"
+                onClick={() => {
+                    modalRef.current?.close();
+                }}
+            ></XMarkIcon>
         </section>
     );
 };

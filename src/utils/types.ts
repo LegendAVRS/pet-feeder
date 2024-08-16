@@ -1,13 +1,12 @@
 export type HomeData = {
     food: number;
     water: number;
-    duration: number;
     temp: number;
     humid: number;
     nextFeed: FeedData;
     prevFeed: FeedData;
     lastImg: ImageData;
-} 
+};
 
 export type VideoData = {
     video_url: string;
@@ -18,12 +17,12 @@ export type DevData = {
     software: string;
     ip: string;
     board: string;
-    wifi: string
-}
+    wifi: string;
+};
 
 export type LogData = {
     logs: string[];
-}
+};
 
 export type EnvironmentData = {
     tempList: ValueTime[];
@@ -45,10 +44,11 @@ export type ValueTime = {
 };
 
 export type FeedData = {
-    value: number; 
-    time: string;// 0505 would be 05:05
+    value: number;
+    time: string; // 0505 would be 05:05
     isOn: boolean;
     id: number;
+    duration: number;
 };
 
 export type ImageData = {
@@ -60,19 +60,19 @@ export type GalleryData = {
     images: ImageData[];
 };
 
-export const URL_HEADER = "http://localhost:3000"
-export const HOME_DATA_URL = "/api/homeData"
-export const GALLERY_URL = "/api/gallery/"
-export const FEED_HISTORY_URL = "/api/foodDrink/"
-export const ENVIRONMENT_HISTORY_URL = "/api/environment/"
-export const FEED_SCHEDULE_URL = "/api/schedule"
-export const LOG_URL = "/api/log"
-export const VIDEO_URL = "/api/video"
-export const DEVICE_URL = "/api/status"
-export const FEED_NOW_URL = "/api/feedNow"
+export const URL_HEADER = "http://localhost:3000";
+export const HOME_DATA_URL = "/api/homeData";
+export const GALLERY_URL = "/api/gallery/";
+export const FEED_HISTORY_URL = "/api/foodDrink/";
+export const ENVIRONMENT_HISTORY_URL = "/api/environment/";
+export const FEED_SCHEDULE_URL = "/api/schedule";
+export const LOG_URL = "/api/log";
+export const VIDEO_URL = "/api/video";
+export const DEVICE_URL = "/api/status";
+export const FEED_NOW_URL = "/api/feedNow";
 
-export const FOOD_WARNING_THRESHOLD = 500
-export const WATER_WARNING_THRESHOLD = 500
-export const TEMPERATURE_WARNING_THRESHOLD = 30
-export const HUMIDITY_WARNING_THRESHOLD = 80
-export const TIME_FETCH_INTERVAL = 300000 // 5 minutes
+export const FOOD_WARNING_THRESHOLD = 500;
+export const WATER_WARNING_THRESHOLD = 500;
+export const TEMPERATURE_WARNING_THRESHOLD = 30;
+export const HUMIDITY_WARNING_THRESHOLD = 200;
+export const TIME_FETCH_INTERVAL = 300000; // 5 minutes

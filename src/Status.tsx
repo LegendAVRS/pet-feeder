@@ -1,8 +1,6 @@
-import { ErrorBoundary } from "react-error-boundary";
 import useData from "./hooks/useData";
 import NavBar from "./NavBar";
 import { DevData, DEVICE_URL } from "./utils/types";
-import Log from "./Log";
 import MiniLog from "./MiniLog";
 import LoadingPage from "./LoadingPage";
 

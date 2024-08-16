@@ -49,26 +49,30 @@ const PetStatus = () => {
         <>
             <NavBar label="Pet Status"></NavBar>
             <section className="px-6">
-                <div className="flex text-xl font-bold items-center gap-2">
-                    <p>From:</p>
-                    <DatePicker
-                        selected={startDate}
-                        onChange={(date) => setStartDate(date)}
-                        selectsStart
-                        startDate={startDate || undefined}
-                        endDate={endDate || undefined}
-                        className="border border-slate-300 rounded-md px-4 py-1"
-                    />
-                    <p>to</p>
-                    <DatePicker
-                        selected={endDate}
-                        onChange={(date) => setEndDate(date)}
-                        selectsEnd
-                        startDate={startDate || undefined}
-                        endDate={endDate || undefined}
-                        minDate={startDate || undefined}
-                        className="border border-slate-300 rounded-md px-4 py-1"
-                    />
+                <div className="flex flex-col text-xl font-bold items-center gap-2">
+                    <div>
+                        <p>From:</p>
+                        <DatePicker
+                            selected={startDate}
+                            onChange={(date) => setStartDate(date)}
+                            selectsStart
+                            startDate={startDate || undefined}
+                            endDate={endDate || undefined}
+                            className="border border-slate-300 rounded-md px-4 py-1"
+                        />
+                    </div>
+                    <div>
+                        <p>to</p>
+                        <DatePicker
+                            selected={endDate}
+                            onChange={(date) => setEndDate(date)}
+                            selectsEnd
+                            startDate={startDate || undefined}
+                            endDate={endDate || undefined}
+                            minDate={startDate || undefined}
+                            className="border border-slate-300 rounded-md px-4 py-1"
+                        />
+                    </div>
                 </div>
                 <div className="border border-slate-300 m-2"></div>
                 <div className="flex justify-between items-center">

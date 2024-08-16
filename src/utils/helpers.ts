@@ -5,13 +5,12 @@ export const getLastValue = <T>(arr: Array<T>): T => {
     return arr[arr.length - 1];
 };
 
-
 export const getImagesInGroup = (imagesData: Array<ImageData>) => {
     let imagesInGroup: { [key: string]: ImageData[] } = {};
 
     imagesData.forEach((image) => {
-        let capturedDate = new Date(image.time * 1000);
-        let dateKey = capturedDate.toISOString().split("T")[0]; // Get date part in YYYY-MM-DD format
+        const capturedDate = new Date(image.time * 1000);
+        const dateKey = capturedDate.toISOString().split("T")[0]; // Get date part in YYYY-MM-DD format
 
         if (!imagesInGroup[dateKey]) {
             imagesInGroup[dateKey] = [] as ImageData[];
@@ -28,17 +27,21 @@ type PieChartReturn = {
     pieChartOption: ChartOptions<"pie">;
 };
 
-export const getPieChart = (label: string, data: number[], warningThresHold: number, isGreater = true): PieChartReturn => {
-    let value = data[0];
-    
-    let backgroundColors = ["rgb(1,100,52)", "#c4c4c4"]
+export const getPieChart = (
+    label: string,
+    data: number[],
+    warningThresHold: number,
+    isGreater = true
+): PieChartReturn => {
+    const value = data[0];
+
+    let backgroundColors = ["rgb(1,100,52)", "#c4c4c4"];
 
     if (isGreater) {
         if (value > warningThresHold) {
             backgroundColors = ["rgb(255,10,10)", "#c4c4c4"];
         }
-    }
-    else {
+    } else {
         if (value < warningThresHold) {
             backgroundColors = ["rgb(255,10,10)", "#c4c4c4"];
         }
@@ -112,90 +115,96 @@ export const getLineChart = (
         ),
         datasets: [
             {
-                label: label ,
+                label: label,
                 data: filteredData.map((entry) => entry.value),
                 fill: false,
                 borderColor: "rgba(75,192,192,1)",
                 tension: 0.1,
             },
         ],
-    }
+    };
     return { chartData, options };
 };
 
 export const unixToDateTimeString = (unix: number) => {
     const date = new Date(unix * 1000);
     return date.toLocaleString();
-}
+};
 
 export function minutesToTimeString(timestamp: number) {
-  // Calculate the hours and minutes
-  const hours = Math.floor(timestamp / 60);
-  const mins = timestamp % 60;
+    // Calculate the hours and minutes
+    const hours = Math.floor(timestamp / 60);
+    const mins = timestamp % 60;
 
-  // Determine AM or PM suffix
-  const period = hours >= 12 ? 'PM' : 'AM';
+    // Determine AM or PM suffix
+    const period = hours >= 12 ? "PM" : "AM";
 
-  // Adjust hours for 12-hour format
-  const adjustedHours = hours % 12 || 12;
+    // Adjust hours for 12-hour format
+    const adjustedHours = hours % 12 || 12;
 
-  // Format hours and minutes as strings with leading zeros if necessary
-  const formattedHours = String(adjustedHours).padStart(2, '0');
-  const formattedMinutes = String(mins).padStart(2, '0');
+    // Format hours and minutes as strings with leading zeros if necessary
+    const formattedHours = String(adjustedHours).padStart(2, "0");
+    const formattedMinutes = String(mins).padStart(2, "0");
 
-  // Combine to form the time string
-  return `${formattedHours}:${formattedMinutes} ${period}`;
+    // Combine to form the time string
+    return `${formattedHours}:${formattedMinutes} ${period}`;
+}
+
+export function getTimeString(str: string) {
+    const hours = str[0] + str[1];
+    const mins = str[2] + str[3];
+    return `${hours}:${mins}`;
 }
 
 export const getData = async (endpoint: string) => {
-    console.log(URL_HEADER + endpoint)
-    const res = await fetch(URL_HEADER + endpoint)
-    console.log("res", res)
-    const data = await res.json()
+    console.log(URL_HEADER + endpoint);
+    const res = await fetch(URL_HEADER + endpoint);
+    console.log("res", res);
+    const data = await res.json();
     return data;
-}
+};
 
 export const postRequest = async (data: any, endpoint: string) => {
-  const endpoint_url = URL_HEADER + endpoint;
+    const endpoint_url = URL_HEADER + endpoint;
 
-  try {
-    const response = await fetch(endpoint_url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-      
-    });
+    try {
+        const response = await fetch(endpoint_url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok ' + response.statusText);
+        if (!response.ok) {
+            throw new Error(
+                "Network response was not ok " + response.statusText
+            );
+        }
+
+        const responseData = await response.json();
+        console.log("Success:", responseData);
+    } catch (error: any) {
+        throw new Error(error);
     }
-
-    const responseData = await response.json();
-    console.log('Success:', responseData);
-  } catch (error: any) {
-    throw new Error(error);
-  }
 };
 
 export const deleteRequest = async (endpoint: string) => {
-  const endpoint_url = URL_HEADER + endpoint;
+    const endpoint_url = URL_HEADER + endpoint;
 
-  try {
-    const response = await fetch(endpoint_url, {
-      method: 'DELETE',
-      
-    });
+    try {
+        const response = await fetch(endpoint_url, {
+            method: "DELETE",
+        });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok ' + response.statusText);
+        if (!response.ok) {
+            throw new Error(
+                "Network response was not ok " + response.statusText
+            );
+        }
+
+        console.log("Resource deleted successfully");
+    } catch (error) {
+        console.error("Error:", error);
     }
-
-    console.log('Resource deleted successfully');
-  } catch (error) {
-    console.error('Error:', error);
-  }
 };
-
-

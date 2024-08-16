@@ -11,6 +11,9 @@ const VideoCall = () => {
     if (!data) {
         return <LoadingPage></LoadingPage>;
     }
+    // play audio
+    const audio = new Audio("");
+    audio.play();
     return (
         <>
             <NavBar label="Pet Call"></NavBar>

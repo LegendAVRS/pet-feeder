@@ -5,7 +5,9 @@
 body {
     @apply overflow-x-hidden;
 }
-
+* {
+    scrollbar-width: thin;
+}
 /* Styles for the loading page container */
 .loading-container {
     display: flex;
@@ -33,6 +35,15 @@ body {
 
 /* Animation */
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+:-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
 }

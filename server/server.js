@@ -1,40 +1,84 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-var cors = require('cors');
+var cors = require("cors");
 app.use(express.json(), cors());
 
 // Endpoint: /api/homeData
 let homeData = {
     food: 100,
-    water: 200,
-    temp: 24,
+    water: 600,
+    temp: 50,
     humid: 60,
-    duration: 1000,
     nextFeed: {
+        id: 1,
         value: 50,
-        time: 1692003000,
+        time: "2040",
+        isOn: true,
+        duration: 5,
     },
     prevFeed: {
-        value: 60,
-        time: 1692004000,
+        id: 1,
+        value: 50,
+        time: "2040",
+        isOn: true,
+        duration: 5,
     },
     lastImg: {
-        image_url: "https://i.kym-cdn.com/photos/images/original/002/269/118/f8c.jpg",
-        time: 1692000000
-    }
+        image_url:
+            "https://media.istockphoto.com/id/937776750/photo/cat-eating-out-of-bowl.jpg?s=612x612&w=0&k=20&c=G5779rGIyUzKEkTL48JFKxqahbaWpj6d9G1y2Oi3Omg=",
+        time: 1692000000,
+    },
 };
 
-app.get('/api/homeData', (req, res) => {
+app.get("/api/homeData", (req, res) => {
     res.json(homeData);
 });
 
 // Endpoint: /api/gallery/
 let images = [
-    { image_url: "https://i.kym-cdn.com/photos/images/original/002/269/118/f8c.jpg", capturedTime: 1692001000 },
-    { image_url: "https://i.kym-cdn.com/photos/images/original/002/269/118/f8c.jpg", capturedTime: 1692002000 },
+    {
+        image_url:
+            "https://media.istockphoto.com/id/937776750/photo/cat-eating-out-of-bowl.jpg?s=612x612&w=0&k=20&c=G5779rGIyUzKEkTL48JFKxqahbaWpj6d9G1y2Oi3Omg=",
+        time: 1692001000,
+    },
+    {
+        image_url:
+            "https://www.shutterstock.com/image-photo/cute-little-kitten-bowl-granules-260nw-508351093.jpg",
+        time: 1692002000,
+    },
+    {
+        image_url:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9t1dbd8CgFXw0FaKI4WxXPh_lK7-G2L25bQ&s",
+        time: 1692002000,
+    },
+    {
+        image_url:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9t1dbd8CgFXw0FaKI4WxXPh_lK7-G2L25bQ&s",
+        time: 1652002000,
+    },
+    {
+        image_url:
+            "https://media.istockphoto.com/id/937776750/photo/cat-eating-out-of-bowl.jpg?s=612x612&w=0&k=20&c=G5779rGIyUzKEkTL48JFKxqahbaWpj6d9G1y2Oi3Omg=",
+        time: 1612002000,
+    },
+    {
+        image_url:
+            "https://www.shutterstock.com/image-photo/cute-little-kitten-bowl-granules-260nw-508351093.jpg",
+        time: 1612002000,
+    },
+    {
+        image_url:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9t1dbd8CgFXw0FaKI4WxXPh_lK7-G2L25bQ&s",
+        time: 1632002000,
+    },
+    {
+        image_url:
+            "https://www.shutterstock.com/image-photo/cute-little-kitten-bowl-granules-260nw-508351093.jpg",
+        time: 1622002000,
+    },
 ];
 
-app.get('/api/gallery', (req, res) => {
+app.get("/api/gallery", (req, res) => {
     res.json({ images });
 });
 
@@ -49,15 +93,15 @@ let waterList = [
     { value: 60, time: 1692004000 },
 ];
 
-app.post('/api/foodDrink/', (req, res) => {
+app.post("/api/foodDrink/", (req, res) => {
     const { start, end } = req.body;
     const filterFeedList = feedList.filter(
-        item => item.time >= start && item.time <= end
+        (item) => item.time >= start && item.time <= end
     );
     const filterWaterList = waterList.filter(
-        item => item.time >= start && item.time <= end
+        (item) => item.time >= start && item.time <= end
     );
-    console.log(filterFeedList)
+    console.log(filterFeedList);
     res.json({ feedList: filterFeedList, waterList: filterWaterList });
 });
 
@@ -74,46 +118,47 @@ let humidList = [
     { value: 50, time: 1692002000 },
 ];
 
-app.post('/api/environment/', (req, res) => {
+app.post("/api/environment/", (req, res) => {
     const { start, end } = req.body;
     const filterTempList = tempList.filter(
-        item => item.time >= start && item.time <= end
+        (item) => item.time >= start && item.time <= end
     );
     const filterHumidList = humidList.filter(
-        item => item.time >= start && item.time <= end
+        (item) => item.time >= start && item.time <= end
     );
     res.json({ tempList: filterTempList, humidList: filterHumidList });
 });
 
 // Endpoint: /api/schedule/
 let schedule = [
-    { id: 1, value: 50, time: "2040", isOn: true },
-    { id: 2, value: 60, time: "1000", isOn: false },
+    { id: 1, value: 50, time: "2040", isOn: true, duration: 5 },
+    { id: 2, value: 60, time: "1000", isOn: false, duration: 10 },
 ];
 
-app.get('/api/schedule', (req, res) => {
+app.get("/api/schedule", (req, res) => {
     res.json({ schedule });
 });
 
 // Endpoint: /api/schedule/ POST
-app.post('/api/schedule', (req, res) => {
-    const { value, time, isOn } = req.body;
+app.post("/api/schedule", (req, res) => {
+    const { value, time, isOn, duration } = req.body;
     const id = schedule.length + 1;
-    schedule.push({ id, value, time, isOn });
+    schedule.push({ id, value, time, isOn, duration });
     console.log(schedule);
     res.json(true);
 });
 
 // Endpoint: /api/schedule/:id UPDATE
-app.post('/api/schedule/:id', (req, res) => {
+app.post("/api/schedule/:id", (req, res) => {
     const { id } = req.params;
-    const { value, time, isOn } = req.body;
+    const { value, time, isOn, duration } = req.body;
     console.log(id);
-    const chosenSchedule = schedule.findIndex(s => s.id == id);
+    const chosenSchedule = schedule.findIndex((s) => s.id == id);
     if (schedule) {
         schedule[chosenSchedule].value = value;
         schedule[chosenSchedule].time = time;
         schedule[chosenSchedule].isOn = isOn;
+        schedule[chosenSchedule].duration = duration;
         console.log(schedule);
         res.json(true);
     } else {
@@ -122,9 +167,9 @@ app.post('/api/schedule/:id', (req, res) => {
 });
 
 // Endpoint: /api/schedule/:id DELETE
-app.delete('/api/schedule/:id', (req, res) => {
+app.delete("/api/schedule/:id", (req, res) => {
     const { id } = req.params;
-    const index = schedule.findIndex(s => s.id == id);
+    const index = schedule.findIndex((s) => s.id == id);
     if (index !== -1) {
         schedule.splice(index, 1);
         res.json(true);
@@ -134,22 +179,22 @@ app.delete('/api/schedule/:id', (req, res) => {
 });
 
 // Endpoint: /api/camera
-app.get('/api/camera', (req, res) => {
+app.get("/api/video", (req, res) => {
     res.json({ images });
 });
 
 // Endpoint: /api/feedNow
-app.post('/api/feedNow', (req, res) => {
+app.post("/api/feedNow", (req, res) => {
     res.json(true);
 });
 
 // Endpoint: /api/restart
-app.post('/api/restart', (req, res) => {
+app.post("/api/restart", (req, res) => {
     res.json(true);
 });
 
 // Endpoint: /api/status
-app.get('/api/status', (req, res) => {
+app.get("/api/status", (req, res) => {
     res.json({
         software: "0.10.0-alpha",
         ip: "192.168.1.2",
@@ -159,13 +204,19 @@ app.get('/api/status', (req, res) => {
 });
 
 // Endpoint: /api/log
-app.get('/api/log', (req, res) => {
+app.get("/api/log", (req, res) => {
     res.json({
         logs: [
             "2021-08-10T12:00:00Z: Feeding 100",
             "2021-08-10T12:00:00Z: Feeding 102",
             "2021-08-10T12:00:00Z: Feeding 101",
-        ]
+            "2021-08-10T12:00:00Z: Feeding 100",
+            "2021-08-10T12:00:00Z: Feeding 102",
+            "2021-08-10T12:00:00Z: Feeding 101",
+            "2021-08-10T12:00:00Z: Feeding 100",
+            "2021-08-10T12:00:00Z: Feeding 102",
+            "2021-08-10T12:00:00Z: Feeding 101",
+        ],
     });
 });
 

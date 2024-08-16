@@ -1,6 +1,6 @@
 import NavBar from "./NavBar";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { postRequest, deleteRequest } from "./utils/helpers";
+import { postRequest, deleteRequest, getTimeString } from "./utils/helpers";
 import { useRef, useState } from "react";
 import AddSchedule from "./AddSchedule";
 import { FEED_SCHEDULE_URL, ScheduleData } from "./utils/types";
@@ -72,9 +72,7 @@ const ChangeSchedule = () => {
                             modalRef.current?.showModal();
                         }}
                     >
-                        <p className="w-full text-xl font-bold text-center">
-                            + Add schedule
-                        </p>
+                        <span className="font-semibold">+ Add schedule</span>
                     </button>
                 </NavBar>
 
@@ -92,7 +90,7 @@ const ChangeSchedule = () => {
                         >
                             <div className="flex items-center justify-between">
                                 <p className="text-2xl font-semibold">
-                                    {thingy.time}
+                                    {getTimeString(thingy.time)}
                                 </p>
                                 <XMarkIcon
                                     className="cursor-pointer"
@@ -104,7 +102,22 @@ const ChangeSchedule = () => {
                                 ></XMarkIcon>
                             </div>
                             <div className="flex items-center justify-between">
-                                <p>Amount: {thingy.value}g</p>
+                                <div className="flex gap-2">
+                                    <p>
+                                        <span className="font-semibold">
+                                            Amount:
+                                        </span>{" "}
+                                        {thingy.value}g
+                                    </p>
+                                    ,
+                                    <p>
+                                        <span className="font-semibold">
+                                            Duration:
+                                        </span>{" "}
+                                        {thingy.duration} minutes
+                                    </p>
+                                </div>
+
                                 <div className="form-control">
                                     <label className="label cursor-pointer flex gap-2">
                                         <span className="label-text">

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import {
     getPieChart,
+    getTimeString,
     postRequest,
     unixToDateTimeString,
 } from "./utils/helpers";
@@ -45,7 +46,7 @@ const MainPage = () => {
 
     const { pieChartData: foodChartData, pieChartOption: foodChartOption } =
         getPieChart(
-            "Food",
+            "Food (grams)",
             [data.food, MAX_FOOD_THRESHOLD],
             FOOD_WARNING_THRESHOLD,
             false
@@ -53,7 +54,7 @@ const MainPage = () => {
 
     const { pieChartData: waterChartData, pieChartOption: waterChartOption } =
         getPieChart(
-            "Water",
+            "Water (ml)",
             [data.water, MAX_WATER_THRESHOLD],
             WATER_WARNING_THRESHOLD,
             false
@@ -61,14 +62,14 @@ const MainPage = () => {
 
     const { pieChartData: tempChartData, pieChartOption: tempChartOption } =
         getPieChart(
-            "temp",
+            "Temparature (°C)",
             [data.temp, MAX_TEMP_THRESHOLD],
             TEMPERATURE_WARNING_THRESHOLD
         );
 
     const { pieChartData: humidChartData, pieChartOption: humidChartOption } =
         getPieChart(
-            "humid",
+            "Humidity (%)",
             [data.humid, MAX_HUMIDITY_THRESHOLD],
             HUMIDITY_WARNING_THRESHOLD
         );
@@ -78,7 +79,7 @@ const MainPage = () => {
             await postRequest(null, FEED_NOW_URL);
             toast.success("Success: Feed now success");
             refreshData();
-        } catch (error: any) {
+        } catch (error) {
             toast.error("Error: Failed to feed");
         }
     };
@@ -114,21 +115,21 @@ const MainPage = () => {
                 <section className="p-4 rounded-2xl border border-slate-300">
                     <div className="flex items-center justify-between font-semibold text-2xl">
                         <p>Next Feed:</p>
-                        <p>{nextFeedData?.value}</p>
-                    </div>
-                    <div className="h-4"></div>
-                    <div className="flex items-center justify-between text-md">
-                        <p>Last Feed:</p>
-                        <p>{lastFeedData?.value}</p>
+                        <p>{getTimeString(nextFeedData?.time)}</p>
                     </div>
                     <div className="flex items-center justify-between text-md">
-                        <p>Time eat:</p>
-                        <p>{data.duration}</p>
+                        <p>Duration:</p>
+                        <p>{nextFeedData.duration} minutes</p>
                     </div>
                     <div className="flex items-center justify-between text-md">
                         <p>Amount:</p>
-                        <p>{nextFeedData?.value}</p>
+                        <p>{nextFeedData?.value} grams</p>
                     </div>
+                    <div className="flex items-center justify-between text-md">
+                        <p>Last Feed:</p>
+                        <p>{getTimeString(lastFeedData.time)}</p>
+                    </div>
+
                     <div className="h-4"></div>
                     <div className="flex gap-4 w-full">
                         <button
@@ -142,12 +143,6 @@ const MainPage = () => {
                             className="basis-1/2 text-center font-semibold py-1 px-4 bg-black text-white rounded-full"
                         >
                             Change schedule
-                        </Link>
-                        <Link
-                            to="./pet-status"
-                            className="basis-1/2 text-center font-semibold py-1 px-4 bg-black text-white rounded-full"
-                        >
-                            Pet Status
                         </Link>
                     </div>
                 </section>
@@ -181,19 +176,14 @@ const MainPage = () => {
                     </div>
                     {data.temp > TEMPERATURE_WARNING_THRESHOLD && (
                         <div className="px-4 py-3 rounded-xl border border-red-900 bg-red-100 text-red-900">
-                            temp is higher than normal
-                        </div>
-                    )}
-                    {data.humid < HUMIDITY_WARNING_THRESHOLD && (
-                        <div className="px-4 py-3 rounded-xl border border-red-900 bg-red-100 text-red-900">
-                            humid is lower than normal
+                            Temparature is higher than normal
                         </div>
                     )}
                 </section>
-                <section className="p-4 rounded-2xl border border-slate-300  flex flex-col gap-2">
+                <section className="p-4 rounded-2xl border border-slate-300  flex flex-col gap-2 mt-4">
                     <div className="flex justify-between items-center">
-                        <p className="font-semibold text-2xl">Enviroment</p>
-                        <Link to="./environment" className="text-2xl">
+                        <p className="font-semibold text-2xl">Food / Water</p>
+                        <Link to="./pet-status" className="text-2xl">
                             →
                         </Link>
                     </div>
