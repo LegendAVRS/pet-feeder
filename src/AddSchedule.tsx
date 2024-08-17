@@ -19,6 +19,7 @@ const AddSchedule = ({
     refreshData,
 }: Props) => {
     const [loading, setLoading] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const handleAddSchedule = async () => {
         try {
             const hourStr = hour < 10 ? "0" + hour : hour.toString();
@@ -30,6 +31,7 @@ const AddSchedule = ({
                     value: feedAmount,
                     duration: feedDuration,
                     isOn: true,
+                    url: "ihadiashdkasjhd", // placeholder
                 },
                 FEED_SCHEDULE_URL
             );
@@ -55,6 +57,7 @@ const AddSchedule = ({
                     value: feedAmount,
                     duration: feedDuration,
                     isOn: chosenSchedule!.isOn,
+                    url: "ihadiashdkasjhd", // placeholder
                 },
                 FEED_SCHEDULE_URL + `/${chosenSchedule!.id}`
             );
@@ -124,9 +127,25 @@ const AddSchedule = ({
             </div>
             <div className="p-4 rounded-2xl border border-slate-300 flex items-center justify-between">
                 <p>Audio</p>
-                <button className="font-semibold py-1 px-4 bg-black text-white rounded-full">
-                    Select file
-                </button>
+                <div className="flex items-center gap-2">
+                    <button
+                        className="font-semibold py-1 px-4 bg-black text-white rounded-full"
+                        onClick={() => {
+                            const input = document.createElement("input");
+                            input.type = "file";
+                            input.accept = "audio/*"; // accept audio files only
+                            input.onchange = (e: any) => {
+                                if (e.target.files.length > 0) {
+                                    setSelectedFile(e.target.files[0]);
+                                }
+                            };
+                            input.click();
+                        }}
+                    >
+                        Select file
+                    </button>
+                    {selectedFile && <p>{selectedFile.name}</p>}
+                </div>
             </div>
             <div className="h-4"></div>
             <div className="p-4 rounded-2xl border border-slate-300 flex items-center justify-between">
