@@ -29,6 +29,16 @@ export type EnvironmentData = {
     humidList: ValueTime[];
 };
 
+export type EnvironmentWrapperData = {
+    environmentHistory: [
+        {
+            tempature: number;
+            humidity: number;
+            time: number;
+        }
+    ];
+};
+
 export type PetStatusData = {
     feedList: ValueTime[];
     waterList: ValueTime[];

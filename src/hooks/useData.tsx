@@ -54,7 +54,8 @@ const useData = <T,>(
 
             const jsonData = await response!.json();
             setData(jsonData as T);
-        } catch (err: any) {
+        } catch (err) {
+            // @ts-expect-error: err might not have a message property
             setError(err.message);
         }
     }, [endpoint, timeRange]);
