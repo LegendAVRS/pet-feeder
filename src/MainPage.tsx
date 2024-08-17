@@ -32,6 +32,24 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const MainPage = () => {
     const { data, error, refreshData } = useData<HomeData>(HOME_DATA_URL);
 
+    // useEffect(() => {
+    //     const eventSource = new EventSource(URL_HEADER + HOME_DATA_URL);
+
+    //     eventSource.onmessage = (event) => {
+    //         const alertData = JSON.parse(event.data);
+    //         if (alertData.type === "TEMPERATURE_ALERT") {
+    //             new Notification("Temperature Alert!", {
+    //                 body: `The feeder's temperature is too high: ${alertData.temp}°C`,
+    //             });
+    //             refreshData();
+    //         }
+    //     };
+
+    //     return () => {
+    //         eventSource.close(); // Clean up when the component unmounts
+    //     };
+    // }, [refreshData]);
+
     if (error) {
         throw new Error(error);
     }

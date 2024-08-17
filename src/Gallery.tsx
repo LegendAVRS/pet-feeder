@@ -1,4 +1,3 @@
-import { ErrorBoundary } from "react-error-boundary";
 import useData from "./hooks/useData";
 import NavBar from "./NavBar";
 import { getImagesInGroup } from "./utils/helpers";
