@@ -177,7 +177,7 @@ export function getTimeString(str: string) {
 
 export const getData = async (endpoint: string) => {
     console.log(URL_HEADER + endpoint);
-    const res = await fetch(URL_HEADER + endpoint);
+    const res = await fetch(URL_HEADER + endpoint, {mode: "cors"});
     console.log("res", res);
     const data = await res.json();
     return data;
@@ -189,6 +189,7 @@ export const postRequest = async (data: any, endpoint: string) => {
     try {
         const response = await fetch(endpoint_url, {
             method: "POST",
+            mode: "cors",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -214,6 +215,7 @@ export const deleteRequest = async (endpoint: string) => {
     try {
         const response = await fetch(endpoint_url, {
             method: "DELETE",
+            mode: "cors"
         });
 
         if (!response.ok) {

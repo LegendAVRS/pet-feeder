@@ -16,6 +16,7 @@ const useData = <T,>(
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), timeout);
         options.signal = controller.signal;
+        options.mode = "cors"
 
         try {
             const response = await fetch(url, options);
