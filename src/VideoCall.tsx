@@ -1,27 +1,27 @@
 import useData from "./hooks/useData";
 import LoadingPage from "./LoadingPage";
 import NavBar from "./NavBar";
-import { VIDEO_URL, VideoData } from "./utils/types";
+import { CAMERA_URL, VideoData } from "./utils/types";
 
 const VideoCall = () => {
-    const { data, error } = useData<VideoData>(VIDEO_URL);
+    const { data, error } = useData<VideoData>(CAMERA_URL);
     if (error) {
         throw new Error(error);
     }
     if (!data) {
         return <LoadingPage></LoadingPage>;
     }
-    // play audio
-    const audio = new Audio("");
-    audio.play();
     return (
         <>
             <NavBar label="Pet Call"></NavBar>
             <section className="px-6">
-                <img
-                    src="https://m.media-amazon.com/images/M/MV5BOTA3NmU1NDMtYzcxMC00ZjI5LTllZWItYWI3MmZkNTE1ZTg0XkEyXkFqcGdeQW1hcmNtYW5u._V1_.jpg"
-                    alt=""
-                />
+                <video
+                    src={data.url}
+                    controls
+                    className="w-full max-w-[60vw] mx-auto"
+                >
+                    Your browser does not support the video tag.
+                </video>
                 <div className="flex justify-between items-center py-8 w-[60vw] max-w-48 mx-auto">
                     <button className="border-2 border-slate-300 rounded-full p-4">
                         <svg

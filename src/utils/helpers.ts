@@ -1,25 +1,44 @@
 import { ChartData, ChartOptions } from "chart.js";
-import { ImageData, URL_HEADER } from "./types";
+import { GalleryData, URL_HEADER } from "./types";
 
 export const getLastValue = <T>(arr: Array<T>): T => {
     return arr[arr.length - 1];
 };
 
-export const getImagesInGroup = (imagesData: Array<ImageData>) => {
-    let imagesInGroup: { [key: string]: ImageData[] } = {};
+export type GalleryItem = {
+    url: string;
+    isVideo: boolean;
+};
+
+export const getImagesInGroup = (
+    imagesData: Array<GalleryData>,
+    videoData: Array<GalleryData>
+) => {
+    let galleryDataInGroup: { [key: string]: GalleryItem[] } = {};
 
     imagesData.forEach((image) => {
         const capturedDate = new Date(image.time * 1000);
         const dateKey = capturedDate.toISOString().split("T")[0]; // Get date part in YYYY-MM-DD format
 
-        if (!imagesInGroup[dateKey]) {
-            imagesInGroup[dateKey] = [] as ImageData[];
+        if (!galleryDataInGroup[dateKey]) {
+            galleryDataInGroup[dateKey] = [] as GalleryItem[];
         }
 
-        imagesInGroup[dateKey].push(image);
+        galleryDataInGroup[dateKey].push({ url: image.url, isVideo: false });
     });
 
-    return imagesInGroup;
+    videoData.forEach((video) => {
+        const capturedDate = new Date(video.time * 1000);
+        const dateKey = capturedDate.toISOString().split("T")[0]; // Get date part in YYYY-MM-DD format
+
+        if (!galleryDataInGroup[dateKey]) {
+            galleryDataInGroup[dateKey] = [] as GalleryItem[];
+        }
+
+        galleryDataInGroup[dateKey].push({ url: video.url, isVideo: true });
+    });
+
+    return galleryDataInGroup;
 };
 
 type PieChartReturn = {

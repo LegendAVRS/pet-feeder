@@ -5,11 +5,11 @@ export type HomeData = {
     humid: number;
     nextFeed: FeedData;
     prevFeed: FeedData;
-    lastImg: ImageData;
+    lastImg: GalleryData;
 };
 
 export type VideoData = {
-    video_url: string;
+    url: string;
     time: number;
 };
 
@@ -51,23 +51,24 @@ export type FeedData = {
     duration: number;
 };
 
-export type ImageData = {
-    image_url: string;
+export type GalleryData = {
+    url: string;
     time: number;
 };
 
-export type GalleryData = {
-    images: ImageData[];
+export type ImagesData = {
+    images: GalleryData[];
 };
 
 export const URL_HEADER = "http://localhost:3000";
 export const HOME_DATA_URL = "/api/homeData";
-export const GALLERY_URL = "/api/gallery/";
+export const IMAGE_URL = "/api/image/";
+export const VIDEO_URL = "/api/video/";
 export const FEED_HISTORY_URL = "/api/foodDrink/";
 export const ENVIRONMENT_HISTORY_URL = "/api/environment/";
 export const FEED_SCHEDULE_URL = "/api/schedule";
 export const LOG_URL = "/api/log";
-export const VIDEO_URL = "/api/video";
+export const CAMERA_URL = "/api/camera";
 export const DEVICE_URL = "/api/status";
 export const FEED_NOW_URL = "/api/feedNow";
 
