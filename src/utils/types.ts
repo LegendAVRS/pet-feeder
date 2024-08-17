@@ -59,6 +59,7 @@ export type FeedData = {
     isOn: boolean;
     id: number;
     duration: number;
+    url: string;
 };
 
 export type GalleryData = {
