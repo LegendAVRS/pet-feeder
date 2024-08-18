@@ -758,6 +758,36 @@ html {
   --tw-contain-style:  ;
 }
 
+.alert {
+  display: grid;
+  width: 100%;
+  grid-auto-flow: row;
+  align-content: flex-start;
+  align-items: center;
+  justify-items: center;
+  gap: 1rem;
+  text-align: center;
+  border-radius: var(--rounded-box, 1rem);
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
+  padding: 1rem;
+  --tw-text-opacity: 1;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+  --alert-bg: var(--fallback-b2,oklch(var(--b2)/1));
+  --alert-bg-mix: var(--fallback-b1,oklch(var(--b1)/1));
+  background-color: var(--alert-bg);
+}
+
+@media (min-width: 640px) {
+  .alert {
+    grid-auto-flow: column;
+    grid-template-columns: auto minmax(auto,1fr);
+    justify-items: start;
+    text-align: start;
+  }
+}
+
 .avatar.placeholder > div {
   display: flex;
   align-items: center;
@@ -1534,13 +1564,12 @@ html {
   z-index: 50;
 }
 
-.m-2 {
-  margin: 0.5rem;
+.z-\[50\] {
+  z-index: 50;
 }
 
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
+.m-2 {
+  margin: 0.5rem;
 }
 
 .mt-2 {
@@ -1627,8 +1656,8 @@ html {
   width: 8rem;
 }
 
-.w-\[60vw\] {
-  width: 60vw;
+.w-\[8rem\] {
+  width: 8rem;
 }
 
 .w-full {
@@ -1637,50 +1666,6 @@ html {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-5 {
-  width: 1.25rem;
-}
-
-.w-\[10rem\] {
-  width: 10rem;
-}
-
-.w-\[7rem\] {
-  width: 7rem;
-}
-
-.w-\[8rem\] {
-  width: 8rem;
-}
-
-.w-1\/2 {
-  width: 50%;
-}
-
-.max-w-48 {
-  max-width: 12rem;
-}
-
-.max-w-\[60vw\] {
-  max-width: 60vw;
-}
-
-.max-w-20 {
-  max-width: 5rem;
-}
-
-.max-w-5 {
-  max-width: 1.25rem;
-}
-
-.max-w-10 {
-  max-width: 2.5rem;
-}
-
-.max-w-40 {
-  max-width: 10rem;
 }
 
 .max-w-28 {
@@ -1797,10 +1782,6 @@ html {
   border-width: 1px;
 }
 
-.border-2 {
-  border-width: 2px;
-}
-
 .border-red-900 {
   --tw-border-opacity: 1;
   border-color: rgb(127 29 29 / var(--tw-border-opacity));
@@ -1866,6 +1847,11 @@ html {
   padding: 1.5rem;
 }
 
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -1889,16 +1875,6 @@ html {
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-}
-
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
 }
 
 .pr-4 {
@@ -1937,14 +1913,14 @@ html {
   line-height: 1.75rem;
 }
 
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-}
-
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .font-bold {
@@ -2025,4 +2001,8 @@ body {
 :-webkit-scrollbar {
   width: 2px;
   height: 2px;
+}
+
+.Toastify__toast-container {
+  z-index: 200000;
 }

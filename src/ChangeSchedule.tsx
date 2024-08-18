@@ -132,13 +132,14 @@ const ChangeSchedule = () => {
                     ))}
                 </section>
             </div>
-            <dialog className="modal" id="cum" ref={modalRef}>
+            <dialog className="modal z-[50]" id="cum" ref={modalRef}>
                 <div className="modal-box h-full">
                     <AddSchedule
                         modalRef={modalRef}
                         chosenSchedule={schedule[chosenIndex]}
                         isAdd={chosenIndex === -1}
                         refreshData={refreshData}
+                        schedule={schedule}
                     ></AddSchedule>
                 </div>
                 <form method="dialog" className="modal-backdrop w-screen">

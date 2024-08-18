@@ -10,6 +10,7 @@ interface Props {
     isAdd: boolean;
     chosenSchedule?: FeedData;
     modalRef: RefObject<HTMLDialogElement>;
+    schedule: FeedData[];
     refreshData: () => void;
 }
 
@@ -18,10 +19,18 @@ const AddSchedule = ({
     chosenSchedule,
     modalRef,
     refreshData,
+    schedule,
 }: Props) => {
     const [loading, setLoading] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const handleAddSchedule = async () => {
+        // return if time is already in the schedule
+        const hourStr = hour < 10 ? "0" + hour : hour.toString();
+        const minuteStr = minute < 10 ? "0" + minute : minute.toString();
+        if (schedule.find((s) => s.time === `${hourStr}${minuteStr}`)) {
+            alert("Time already exists in schedule");
+            return;
+        }
         try {
             const hourStr = hour < 10 ? "0" + hour : hour.toString();
             const minuteStr = minute < 10 ? "0" + minute : minute.toString();
@@ -41,12 +50,21 @@ const AddSchedule = ({
             toast.success("Success: Edited schedule");
             modalRef.current?.close();
         } catch (error) {
+            // put toast's zIndex higher than the modal
+            modalRef.current?.close();
             toast.error("Error: Failed to edit schedule");
         }
     };
 
     const handleEditSchedule = async () => {
         // convert hour and minute to the correct format string
+        const hourStr = hour < 10 ? "0" + hour : hour.toString();
+        const minuteStr = minute < 10 ? "0" + minute : minute.toString();
+        if (schedule.find((s) => s.time === `${hourStr}${minuteStr}`)) {
+            alert("Time already exists in schedule");
+            return;
+        }
+
         try {
             const hourStr = hour < 10 ? "0" + hour : hour.toString();
             const minuteStr = minute < 10 ? "0" + minute : minute.toString();
@@ -67,6 +85,7 @@ const AddSchedule = ({
             toast.success("Success: Edited schedule");
             modalRef.current?.close();
         } catch (error) {
+            modalRef.current?.close();
             toast.error("Error: Failed to edit schedule");
         }
     };
@@ -100,7 +119,7 @@ const AddSchedule = ({
     return (
         <section className="relative">
             <h1 className="font-bold text-3xl">Add / Edit</h1>
-            <div className="flex items-center justify-center gap-4 h-[20vh]">
+            <div className="flex items-center justify-center gap-4 h-[20vh] mt-4">
                 <input
                     type="text"
                     className="aspect-square w-32 flex items-center justify-center rounded-2xl border border-slate-300 font-semibold text-center text-[5rem]"
