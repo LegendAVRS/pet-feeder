@@ -58,6 +58,8 @@ const MainPage = () => {
         return <LoadingPage></LoadingPage>;
     }
 
+    console.log(data);
+
     const nextFeedData = data.nextFeed;
     const lastFeedData = data.prevFeed;
     const lastImgData = data.lastImg;
@@ -137,19 +139,37 @@ const MainPage = () => {
                 <section className="p-4 rounded-2xl border border-slate-300">
                     <div className="flex items-center justify-between font-semibold text-2xl">
                         <p>Next Feed:</p>
-                        <p>{getTimeString(nextFeedData?.time)}</p>
+                        <p>
+                            {nextFeedData.time !== "null"
+                                ? getTimeString(nextFeedData?.time)
+                                : ""}
+                        </p>
                     </div>
                     <div className="flex items-center justify-between text-md">
                         <p>Duration:</p>
-                        <p>{nextFeedData.feed_duration} minutes</p>
+                        <p>
+                            {nextFeedData.feed_duration !== -1
+                                ? nextFeedData.feed_duration
+                                : ""}{" "}
+                            minutes
+                        </p>
                     </div>
                     <div className="flex items-center justify-between text-md">
                         <p>Amount:</p>
-                        <p>{nextFeedData?.value} grams</p>
+                        <p>
+                            {nextFeedData?.value !== -1
+                                ? nextFeedData.value
+                                : ""}{" "}
+                            grams
+                        </p>
                     </div>
                     <div className="flex items-center justify-between text-md">
                         <p>Last Feed:</p>
-                        <p>{getTimeString(lastFeedData.time)}</p>
+                        <p>
+                            {lastFeedData.time !== "null"
+                                ? getTimeString(lastFeedData.time)
+                                : ""}
+                        </p>
                     </div>
 
                     <div className="h-4"></div>

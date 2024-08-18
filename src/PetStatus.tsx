@@ -31,6 +31,12 @@ const PetStatus = () => {
         endDate: endDate?.getTime(),
     });
 
+    useEffect(() => {
+        refreshData1();
+        refreshData2();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [startDate, endDate]);
+
     if (error1) {
         throw new Error(error1);
     }
@@ -39,30 +45,12 @@ const PetStatus = () => {
         throw new Error(error2);
     }
 
-    useEffect(() => {
-        refreshData1();
-        refreshData2();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [startDate, endDate]);
-
     if (!feedData || !waterData) {
         return <LoadingPage></LoadingPage>;
     }
 
-    const foodChart = getLineChart(
-        startDate,
-        endDate,
-        feedData.feedList,
-        "Grams",
-        1000
-    );
-    const waterChart = getLineChart(
-        startDate,
-        endDate,
-        waterData.waterList,
-        "Milliliters",
-        1000
-    );
+    const foodChart = getLineChart(feedData.feedList, "Grams", 1000);
+    const waterChart = getLineChart(waterData.waterList, "Milliliters", 1000);
     return (
         <>
             <NavBar label="Pet Status"></NavBar>

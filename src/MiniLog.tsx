@@ -9,6 +9,7 @@ const MiniLog = () => {
     if (!data) {
         return <div>Loading...</div>;
     }
+    console.log(data);
     return (
         <>
             <section className="px-6 mt-4 relative">

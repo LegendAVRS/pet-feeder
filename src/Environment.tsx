@@ -45,13 +45,8 @@ const Environment = () => {
         })),
     };
 
-    const temperatureChart = getLineChart(
-        startDate,
-        endDate,
-        data.tempList,
-        "Celsius"
-    );
-    const humidityChart = getLineChart(startDate, endDate, data.humidList, "%");
+    const temperatureChart = getLineChart(data.tempList, "Celsius");
+    const humidityChart = getLineChart(data.humidList, "%");
 
     return (
         <>

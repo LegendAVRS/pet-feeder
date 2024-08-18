@@ -40,7 +40,7 @@ const AddSchedule = ({
                 {
                     time: `${hourStr}:${minuteStr}:00`,
                     value: feedAmount,
-                    duration: feedDuration,
+                    feed_duration: feedDuration,
                     isOn: true,
                     url: selectedFile?.name, // placeholder
                 },
@@ -76,14 +76,13 @@ const AddSchedule = ({
             setLoading(true);
             await postRequest(
                 {
-                    id: chosenSchedule!.id,
-                    time: `${hourStr}${minuteStr}`,
+                    time: `${hourStr}:${minuteStr}:00`,
                     value: feedAmount,
-                    duration: feedDuration,
+                    feed_duration: feedDuration,
                     isOn: chosenSchedule!.isOn,
                     url: selectedFile?.name,
                 },
-                FEED_SCHEDULE_URL + `/${chosenSchedule!.id}`
+                FEED_SCHEDULE_URL + `${chosenSchedule!.id}`
             );
             setLoading(false);
             refreshData();

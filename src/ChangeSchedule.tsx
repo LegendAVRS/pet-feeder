@@ -33,8 +33,16 @@ const ChangeSchedule = () => {
         setData(dataCopy);
 
         // Send the update to the server and wait for the response
+        const timeWithSeconds =
+            getTimeString(dataCopy.schedule[index].time) + ":00";
         await postRequest(
-            dataCopy.schedule[index],
+            {
+                time: timeWithSeconds,
+                value: dataCopy.schedule[index].value,
+                feed_duration: dataCopy.schedule[index].feed_duration,
+                isOn: dataCopy.schedule[index].isOn,
+                url: dataCopy.schedule[index].url,
+            },
             `${FEED_SCHEDULE_URL}${dataCopy.schedule[index].id}`
         );
 

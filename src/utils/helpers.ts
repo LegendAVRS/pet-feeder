@@ -109,13 +109,10 @@ export const filterDataByDateRange = (
 };
 
 export const getLineChart = (
-    start: Date | null,
-    end: Date | null,
     data: { value: number; time: number }[],
     label: string,
     max: number = 100
 ): { chartData: ChartData<"line">; options: ChartOptions<"line"> } => {
-    const filteredData = filterDataByDateRange(data, start, end);
     const options = {
         scales: {
             y: {
@@ -129,14 +126,29 @@ export const getLineChart = (
             },
         },
     };
+
+    if (!data || data.length === 0) {
+        const chartData: ChartData<"line"> = {
+            labels: [],
+            datasets: [
+                {
+                    label: label,
+                    data: [],
+                    fill: false,
+                    borderColor: "rgba(75,192,192,1)",
+                    tension: 0.1,
+                },
+            ],
+        };
+        return { chartData, options };
+    }
+
     const chartData: ChartData<"line"> = {
-        labels: filteredData.map((entry) =>
-            new Date(entry.time).toLocaleDateString()
-        ),
+        labels: data.map((entry) => new Date(entry.time).toLocaleDateString()),
         datasets: [
             {
                 label: label,
-                data: filteredData.map((entry) => entry.value),
+                data: data.map((entry) => entry.value),
                 fill: false,
                 borderColor: "rgba(75,192,192,1)",
                 tension: 0.1,
