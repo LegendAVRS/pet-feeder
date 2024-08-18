@@ -76,16 +76,16 @@ export type VideosData = {
 };
 
 export const URL_HEADER = "http://localhost:3000";
-export const HOME_DATA_URL = "/api/homeData";
+export const HOME_DATA_URL = "/api/homeData/";
 export const IMAGE_URL = "/api/image/";
 export const VIDEO_URL = "/api/video/";
 export const FEED_HISTORY_URL = "/api/foodDrink/";
 export const ENVIRONMENT_HISTORY_URL = "/api/environment/";
-export const FEED_SCHEDULE_URL = "/api/schedule";
-export const LOG_URL = "/api/log";
-export const CAMERA_URL = "/api/camera";
-export const DEVICE_URL = "/api/status";
-export const FEED_NOW_URL = "/api/feedNow";
+export const FEED_SCHEDULE_URL = "/api/schedule/";
+export const LOG_URL = "/api/log/";
+export const CAMERA_URL = "/api/camera/";
+export const DEVICE_URL = "/api/status/";
+export const FEED_NOW_URL = "/api/feedNow/";
 
 export const FOOD_WARNING_THRESHOLD = 500;
 export const WATER_WARNING_THRESHOLD = 500;

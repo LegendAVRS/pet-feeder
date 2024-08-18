@@ -37,7 +37,7 @@ const AddSchedule = ({
             setLoading(true);
             await postRequest(
                 {
-                    time: `${hourStr}${minuteStr}`,
+                    time: `${hourStr}:${minuteStr}:00`,
                     value: feedAmount,
                     duration: feedDuration,
                     isOn: true,
