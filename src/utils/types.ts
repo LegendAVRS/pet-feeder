@@ -58,7 +58,7 @@ export type FeedData = {
     time: string; // 0505 would be 05:05
     isOn: boolean;
     id: number;
-    duration: number;
+    feed_duration: number;
     url: string;
 };
 

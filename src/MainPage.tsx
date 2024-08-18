@@ -141,7 +141,7 @@ const MainPage = () => {
                     </div>
                     <div className="flex items-center justify-between text-md">
                         <p>Duration:</p>
-                        <p>{nextFeedData.duration} minutes</p>
+                        <p>{nextFeedData.feed_duration} minutes</p>
                     </div>
                     <div className="flex items-center justify-between text-md">
                         <p>Amount:</p>

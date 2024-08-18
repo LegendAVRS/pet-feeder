@@ -96,11 +96,13 @@ const AddSchedule = ({
                   hour: chosenSchedule!.time.slice(0, 2),
                   minute: chosenSchedule!.time.slice(3, 5),
                   value: chosenSchedule!.value,
+                  feed_duration: chosenSchedule!.feed_duration,
               }
             : {
                   hour: "10",
                   minute: "00",
                   value: 10,
+                  feed_duration: 10,
               };
 
     const [hour, setHour] = useState(parseInt(defaultVal.hour));

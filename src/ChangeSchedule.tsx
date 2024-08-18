@@ -34,7 +34,7 @@ const ChangeSchedule = () => {
         // Send the update to the server and wait for the response
         await postRequest(
             dataCopy.schedule[index],
-            `${FEED_SCHEDULE_URL}/${dataCopy.schedule[index].id}`
+            `${FEED_SCHEDULE_URL}${dataCopy.schedule[index].id}`
         );
 
         refreshData();
@@ -46,7 +46,7 @@ const ChangeSchedule = () => {
 
             // Send the delete request to the server and wait for the response
             await deleteRequest(
-                `${FEED_SCHEDULE_URL}/${dataCopy.schedule[index].id}`
+                `${FEED_SCHEDULE_URL}${dataCopy.schedule[index].id}`
             );
             toast.success("Success: Deleted schedule");
             refreshData();
