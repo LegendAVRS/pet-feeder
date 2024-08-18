@@ -19,11 +19,7 @@ const Status = () => {
 
     const handleRestart = async () => {
         try {
-            await postRequest(
-                1,
-
-                RESTART_URL
-            );
+            await postRequest(1, RESTART_URL);
             toast.success("Success: Restarting device");
         } catch (error) {
             toast.error("Error: Failed to restart device");

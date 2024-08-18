@@ -19,7 +19,6 @@ const Gallery = () => {
     if (!data_image || !data_video) {
         return <LoadingPage></LoadingPage>;
     }
-    console.log(data_image);
     const stuff = getImagesInGroup(data_image, data_video);
     return (
         <>

@@ -3,7 +3,7 @@ import { TIME_FETCH_INTERVAL, URL_HEADER } from "../utils/global";
 
 const useData = <T,>(
     endpoint: string,
-    timeRange?: { start: Date | null; end: Date | null }
+    timeRange?: { startDate: number | undefined; endDate: number | undefined }
 ) => {
     const [data, setData] = useState<T | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -35,7 +35,6 @@ const useData = <T,>(
         try {
             const url = URL_HEADER + endpoint;
             let response;
-
             if (!timeRange) {
                 response = await fetchWithTimeout(url);
             } else {
@@ -59,7 +58,7 @@ const useData = <T,>(
             // @ts-expect-error: err might not have a message property
             setError(err.message);
         }
-    }, [endpoint, timeRange]);
+    }, [timeRange, endpoint]);
 
     useEffect(() => {
         fetchData();
@@ -69,7 +68,8 @@ const useData = <T,>(
         return () => {
             clearInterval(interval); // Clear the interval when the component unmounts
         };
-    }, [fetchData]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return { data, setData, error, refreshData: fetchData };
 };

@@ -110,7 +110,6 @@ const AddSchedule = ({
                   value: 10,
                   feed_duration: 10,
               };
-    console.log(chosenSchedule);
     const [hour, setHour] = useState(parseInt(defaultVal.hour));
     const [minute, setMinute] = useState(parseInt(defaultVal.minute));
     const [feedAmount, setFeedAmount] = useState(defaultVal.value);

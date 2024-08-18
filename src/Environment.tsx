@@ -18,8 +18,8 @@ const Environment = () => {
         refreshData,
         error,
     } = useData<EnvironmentWrapperData>(ENVIRONMENT_HISTORY_URL, {
-        start: startDate,
-        end: endDate,
+        startDate: startDate?.getTime(),
+        endDate: endDate?.getTime(),
     });
 
     useEffect(() => {
@@ -44,7 +44,6 @@ const Environment = () => {
             time: env.time,
         })),
     };
-    console.log(data.tempList);
 
     const temperatureChart = getLineChart(
         startDate,

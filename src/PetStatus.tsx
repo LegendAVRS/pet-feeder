@@ -12,13 +12,14 @@ import LoadingPage from "./LoadingPage";
 const PetStatus = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
+
     const {
         data: feedData,
         refreshData: refreshData1,
         error: error1,
     } = useData<FeedHistoryData>(FEED_HISTORY_URL, {
-        start: startDate,
-        end: endDate,
+        startDate: startDate?.getTime(),
+        endDate: endDate?.getTime(),
     });
 
     const {
@@ -26,8 +27,8 @@ const PetStatus = () => {
         refreshData: refreshData2,
         error: error2,
     } = useData<WaterHistoryData>(FEED_HISTORY_URL, {
-        start: startDate,
-        end: endDate,
+        startDate: startDate?.getTime(),
+        endDate: endDate?.getTime(),
     });
 
     if (error1) {
@@ -41,7 +42,8 @@ const PetStatus = () => {
     useEffect(() => {
         refreshData1();
         refreshData2();
-    }, [startDate, endDate, refreshData1, refreshData2]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [startDate, endDate]);
 
     if (!feedData || !waterData) {
         return <LoadingPage></LoadingPage>;

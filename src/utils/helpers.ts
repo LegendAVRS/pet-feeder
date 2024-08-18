@@ -177,9 +177,7 @@ export function getTimeString(str: string) {
 }
 
 export const getData = async (endpoint: string) => {
-    console.log(URL_HEADER + endpoint);
     const res = await fetch(URL_HEADER + endpoint, { mode: "cors" });
-    console.log("res", res);
     const data = await res.json();
     return data;
 };
@@ -204,7 +202,6 @@ export const postRequest = async (data: any, endpoint: string) => {
         }
 
         const responseData = await response.json();
-        console.log("Success:", responseData);
     } catch (error: any) {
         throw new Error(error);
     }
@@ -224,8 +221,6 @@ export const deleteRequest = async (endpoint: string) => {
                 "Network response was not ok " + response.statusText
             );
         }
-
-        console.log("Resource deleted successfully");
     } catch (error) {
         console.error("Error:", error);
     }
