@@ -47,7 +47,3 @@ body {
     width: 2px;
     height: 2px;
 }
-
-.Toastify__toast-container {
-    z-index: 200000;
-}

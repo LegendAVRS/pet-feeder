@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import useData from "./hooks/useData";
-import { LOG_URL, LogData } from "./utils/types";
+import { LogsData } from "./utils/types";
+import { LOG_URL } from "./utils/global";
+import { unixToDateTimeString } from "./utils/helpers";
 
 const MiniLog = () => {
-    const { data } = useData<LogData>(LOG_URL);
+    const { data } = useData<LogsData>(LOG_URL);
     if (!data) {
         return <div>Loading...</div>;
     }
@@ -13,7 +15,7 @@ const MiniLog = () => {
                 <div className="p-4 rounded-md bg-gray-300 h-52 max-h-52 overflow-auto">
                     {data?.logs.map((log, index) => (
                         <div key={index} className="p-2">
-                            {log}
+                            {unixToDateTimeString(log.time)}: {log.log}
                         </div>
                     ))}
                 </div>

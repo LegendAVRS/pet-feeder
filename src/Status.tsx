@@ -1,8 +1,11 @@
 import useData from "./hooks/useData";
 import NavBar from "./NavBar";
-import { DevData, DEVICE_URL } from "./utils/types";
+import { DevData } from "./utils/types";
+import { DEVICE_URL, RESTART_URL } from "./utils/global";
 import MiniLog from "./MiniLog";
 import LoadingPage from "./LoadingPage";
+import { postRequest } from "./utils/helpers";
+import { toast } from "react-toastify";
 
 const Status = () => {
     const { data, error } = useData<DevData>(DEVICE_URL);
@@ -13,6 +16,20 @@ const Status = () => {
     if (!data) {
         return <LoadingPage></LoadingPage>;
     }
+
+    const handleRestart = async () => {
+        try {
+            await postRequest(
+                1,
+
+                RESTART_URL
+            );
+            toast.success("Success: Restarting device");
+        } catch (error) {
+            toast.error("Error: Failed to restart device");
+        }
+    };
+
     return (
         <>
             <NavBar label="Device Status"></NavBar>
@@ -20,7 +37,10 @@ const Status = () => {
                 <div className="p-4 rounded-2xl border border-slate-300">
                     <div className="flex items-center justify-between">
                         <p>Restart device</p>
-                        <button className="font-semibold py-1 px-4 bg-black text-white rounded-full">
+                        <button
+                            className="font-semibold py-1 px-4 bg-black text-white rounded-full"
+                            onClick={handleRestart}
+                        >
                             Restart now
                         </button>
                     </div>

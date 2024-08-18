@@ -4,11 +4,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
 import { getLineChart } from "./utils/helpers";
-import {
-    ENVIRONMENT_HISTORY_URL,
-    EnvironmentData,
-    EnvironmentWrapperData,
-} from "./utils/types";
+import { EnvironmentData, EnvironmentWrapperData } from "./utils/types";
+import { ENVIRONMENT_HISTORY_URL } from "./utils/global";
 import useData from "./hooks/useData";
 import LoadingPage from "./LoadingPage";
 import NavBar from "./NavBar";
@@ -27,6 +24,7 @@ const Environment = () => {
 
     useEffect(() => {
         refreshData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [startDate, endDate]);
 
     if (error) {

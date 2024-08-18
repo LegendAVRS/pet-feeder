@@ -2,7 +2,8 @@ import useData from "./hooks/useData";
 import LoadingPage from "./LoadingPage";
 import NavBar from "./NavBar";
 import { unixToDateTimeString } from "./utils/helpers";
-import { CAMERA_URL, VideoData } from "./utils/types";
+import { VideoData } from "./utils/types";
+import { CAMERA_URL } from "./utils/global";
 
 const VideoCall = () => {
     const { data, error } = useData<VideoData>(CAMERA_URL);

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { TIME_FETCH_INTERVAL, URL_HEADER } from "../utils/types";
+import { TIME_FETCH_INTERVAL, URL_HEADER } from "../utils/global";
 
 const useData = <T,>(
     endpoint: string,
@@ -16,7 +16,7 @@ const useData = <T,>(
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), timeout);
         options.signal = controller.signal;
-        options.mode = "cors"
+        options.mode = "cors";
 
         try {
             const response = await fetch(url, options);

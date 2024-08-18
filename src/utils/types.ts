@@ -21,7 +21,12 @@ export type DevData = {
 };
 
 export type LogData = {
-    logs: string[];
+    log: string;
+    time: number;
+};
+
+export type LogsData = {
+    logs: LogData[];
 };
 
 export type EnvironmentData = {
@@ -39,8 +44,11 @@ export type EnvironmentWrapperData = {
     ];
 };
 
-export type PetStatusData = {
+export type FeedHistoryData = {
     feedList: ValueTime[];
+};
+
+export type WaterHistoryData = {
     waterList: ValueTime[];
 };
 
@@ -67,6 +75,11 @@ export type GalleryData = {
     time: number;
 };
 
+export type ImageData = {
+    image_url: string;
+    time: number;
+};
+
 export type ImagesData = {
     images: GalleryData[];
 };
@@ -74,21 +87,3 @@ export type ImagesData = {
 export type VideosData = {
     videos: GalleryData[];
 };
-
-export const URL_HEADER = "http://localhost:3000";
-export const HOME_DATA_URL = "/api/homeData/";
-export const IMAGE_URL = "/api/image/";
-export const VIDEO_URL = "/api/video/";
-export const FEED_HISTORY_URL = "/api/foodDrink/";
-export const ENVIRONMENT_HISTORY_URL = "/api/environment/";
-export const FEED_SCHEDULE_URL = "/api/schedule/";
-export const LOG_URL = "/api/log/";
-export const CAMERA_URL = "/api/camera/";
-export const DEVICE_URL = "/api/status/";
-export const FEED_NOW_URL = "/api/feedNow/";
-
-export const FOOD_WARNING_THRESHOLD = 500;
-export const WATER_WARNING_THRESHOLD = 500;
-export const TEMPERATURE_WARNING_THRESHOLD = 30;
-export const HUMIDITY_WARNING_THRESHOLD = 200;
-export const TIME_FETCH_INTERVAL = 300000; // 5 minutes

@@ -1,5 +1,6 @@
 import { ChartData, ChartOptions } from "chart.js";
-import { GalleryData, ImagesData, URL_HEADER, VideosData } from "./types";
+import { ImagesData, VideosData } from "./types";
+import { URL_HEADER } from "./global";
 
 export const getLastValue = <T>(arr: Array<T>): T => {
     return arr[arr.length - 1];
@@ -177,7 +178,7 @@ export function getTimeString(str: string) {
 
 export const getData = async (endpoint: string) => {
     console.log(URL_HEADER + endpoint);
-    const res = await fetch(URL_HEADER + endpoint, {mode: "cors"});
+    const res = await fetch(URL_HEADER + endpoint, { mode: "cors" });
     console.log("res", res);
     const data = await res.json();
     return data;
@@ -215,7 +216,7 @@ export const deleteRequest = async (endpoint: string) => {
     try {
         const response = await fetch(endpoint_url, {
             method: "DELETE",
-            mode: "cors"
+            mode: "cors",
         });
 
         if (!response.ok) {

@@ -4,44 +4,60 @@ import { getLineChart } from "./utils/helpers";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto"; // ADD THIS
 import DatePicker from "react-datepicker";
-import { FEED_HISTORY_URL, PetStatusData } from "./utils/types";
+import { FeedHistoryData, WaterHistoryData } from "./utils/types";
+import { FEED_HISTORY_URL } from "./utils/global";
 import useData from "./hooks/useData";
 import LoadingPage from "./LoadingPage";
 
 const PetStatus = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
-    const { data, refreshData, error } = useData<PetStatusData>(
-        FEED_HISTORY_URL,
-        {
-            start: startDate,
-            end: endDate,
-        }
-    );
+    const {
+        data: feedData,
+        refreshData: refreshData1,
+        error: error1,
+    } = useData<FeedHistoryData>(FEED_HISTORY_URL, {
+        start: startDate,
+        end: endDate,
+    });
 
-    if (error) {
-        throw new Error(error);
+    const {
+        data: waterData,
+        refreshData: refreshData2,
+        error: error2,
+    } = useData<WaterHistoryData>(FEED_HISTORY_URL, {
+        start: startDate,
+        end: endDate,
+    });
+
+    if (error1) {
+        throw new Error(error1);
+    }
+
+    if (error2) {
+        throw new Error(error2);
     }
 
     useEffect(() => {
-        refreshData();
-    }, [startDate, endDate]);
+        refreshData1();
+        refreshData2();
+    }, [startDate, endDate, refreshData1, refreshData2]);
 
-    if (!data) {
+    if (!feedData || !waterData) {
         return <LoadingPage></LoadingPage>;
     }
 
     const foodChart = getLineChart(
         startDate,
         endDate,
-        data.feedList,
+        feedData.feedList,
         "Grams",
         1000
     );
     const waterChart = getLineChart(
         startDate,
         endDate,
-        data.waterList,
+        waterData.waterList,
         "Milliliters",
         1000
     );

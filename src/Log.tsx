@@ -1,10 +1,11 @@
 import useData from "./hooks/useData";
 import NavBar from "./NavBar";
-import { LOG_URL, LogData } from "./utils/types";
+import { LogsData } from "./utils/types";
+import { LOG_URL } from "./utils/global";
 import LoadingPage from "./LoadingPage";
 
 const Log = () => {
-    const { data, error } = useData<LogData>(LOG_URL);
+    const { data, error } = useData<LogsData>(LOG_URL);
 
     if (error) {
         throw new Error(error);
@@ -20,7 +21,7 @@ const Log = () => {
                 <div className="p-4 rounded-md bg-gray-300 h-[80vh] max-h-[80vh] overflow-x-auto overflow-y-scroll">
                     {data?.logs.map((log, index) => (
                         <div key={index} className="p-2">
-                            {log}
+                            {log.time}: {log.log}
                         </div>
                     ))}
                 </div>

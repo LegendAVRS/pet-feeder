@@ -1,6 +1,7 @@
 import { RefObject, useEffect, useState } from "react";
 import { postRequest } from "./utils/helpers"; // import the postRequest function
-import { FEED_SCHEDULE_URL, FeedData } from "./utils/types";
+import { FeedData } from "./utils/types";
+import { FEED_SCHEDULE_URL } from "./utils/global";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { XMarkIcon } from "@heroicons/react/16/solid";
@@ -114,6 +115,7 @@ const AddSchedule = ({
     const [minute, setMinute] = useState(parseInt(defaultVal.minute));
     const [feedAmount, setFeedAmount] = useState(defaultVal.value);
     const [feedDuration, setFeedDuration] = useState(10);
+
     useEffect(() => {
         if (isAdd === false) {
             setHour(parseInt(defaultVal.hour));
@@ -126,6 +128,7 @@ const AddSchedule = ({
             return;
         }
         setSelectedFile(null);
+        // eslint-disable-next-line
     }, [isAdd, chosenSchedule]);
 
     return (

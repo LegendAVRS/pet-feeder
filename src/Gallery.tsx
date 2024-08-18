@@ -1,13 +1,8 @@
 import useData from "./hooks/useData";
 import NavBar from "./NavBar";
 import { getImagesInGroup } from "./utils/helpers";
-import {
-    GalleryData,
-    IMAGE_URL,
-    ImagesData,
-    VIDEO_URL,
-    VideosData,
-} from "./utils/types";
+import { ImagesData, VideosData } from "./utils/types";
+import { IMAGE_URL, VIDEO_URL } from "./utils/global";
 import LoadingPage from "./LoadingPage";
 
 const Gallery = () => {

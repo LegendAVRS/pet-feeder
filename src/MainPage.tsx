@@ -12,15 +12,15 @@ import {
     MAX_TEMP_THRESHOLD,
     MAX_WATER_THRESHOLD,
 } from "./utils/global";
+import { HomeData } from "./utils/types";
 import {
     FEED_NOW_URL,
-    FOOD_WARNING_THRESHOLD,
     HOME_DATA_URL,
-    HomeData,
     HUMIDITY_WARNING_THRESHOLD,
     TEMPERATURE_WARNING_THRESHOLD,
     WATER_WARNING_THRESHOLD,
-} from "./utils/types";
+} from "./utils/global";
+import { FOOD_WARNING_THRESHOLD } from "./utils/global";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import useData from "./hooks/useData";
 import { InformationCircleIcon } from "@heroicons/react/16/solid";
@@ -113,7 +113,7 @@ const MainPage = () => {
                 <section className="relative aspect-[3/2] rounded-2xl overflow-hidden">
                     <Link to="./gallery" className="block w-full h-full">
                         <img
-                            src={lastImgData?.image_url}
+                            src={lastImgData?.url}
                             className="w-full h-full object-cover"
                         />
                         <div className="absolute top-0 left-0 w-full h-full z-20 bg-gradient-to-t from-black to-transparent to-25%"></div>
