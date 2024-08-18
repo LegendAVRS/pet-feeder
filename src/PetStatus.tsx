@@ -5,7 +5,7 @@ import { Line } from "react-chartjs-2";
 import "chart.js/auto"; // ADD THIS
 import DatePicker from "react-datepicker";
 import { FeedHistoryData, WaterHistoryData } from "./utils/types";
-import { FEED_HISTORY_URL } from "./utils/global";
+import { FEED_HISTORY_URL, WATER_HISTORY_URL } from "./utils/global";
 import useData from "./hooks/useData";
 import LoadingPage from "./LoadingPage";
 
@@ -26,7 +26,7 @@ const PetStatus = () => {
         data: waterData,
         refreshData: refreshData2,
         error: error2,
-    } = useData<WaterHistoryData>(FEED_HISTORY_URL, {
+    } = useData<WaterHistoryData>(WATER_HISTORY_URL, {
         startDate: startDate?.getTime(),
         endDate: endDate?.getTime(),
     });
