@@ -24,8 +24,7 @@ let homeData = {
         duration: 5,
     },
     lastImg: {
-        image_url:
-            "https://media.istockphoto.com/id/937776750/photo/cat-eating-out-of-bowl.jpg?s=612x612&w=0&k=20&c=G5779rGIyUzKEkTL48JFKxqahbaWpj6d9G1y2Oi3Omg=",
+        url: "https://media.istockphoto.com/id/937776750/photo/cat-eating-out-of-bowl.jpg?s=612x612&w=0&k=20&c=G5779rGIyUzKEkTL48JFKxqahbaWpj6d9G1y2Oi3Omg=",
         time: 1692000000,
     },
 };
@@ -37,51 +36,46 @@ app.get("/api/homeData", (req, res) => {
 // Endpoint: /api/gallery/
 let images = [
     {
-        image_url:
-            "https://media.istockphoto.com/id/937776750/photo/cat-eating-out-of-bowl.jpg?s=612x612&w=0&k=20&c=G5779rGIyUzKEkTL48JFKxqahbaWpj6d9G1y2Oi3Omg=",
+        url: "https://media.istockphoto.com/id/937776750/photo/cat-eating-out-of-bowl.jpg?s=612x612&w=0&k=20&c=G5779rGIyUzKEkTL48JFKxqahbaWpj6d9G1y2Oi3Omg=",
         time: 1692001000,
     },
     {
-        image_url:
-            "https://www.shutterstock.com/image-photo/cute-little-kitten-bowl-granules-260nw-508351093.jpg",
+        url: "https://www.shutterstock.com/image-photo/cute-little-kitten-bowl-granules-260nw-508351093.jpg",
         time: 1692002000,
     },
     {
-        image_url:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9t1dbd8CgFXw0FaKI4WxXPh_lK7-G2L25bQ&s",
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9t1dbd8CgFXw0FaKI4WxXPh_lK7-G2L25bQ&s",
         time: 1692002000,
     },
     {
-        image_url:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9t1dbd8CgFXw0FaKI4WxXPh_lK7-G2L25bQ&s",
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9t1dbd8CgFXw0FaKI4WxXPh_lK7-G2L25bQ&s",
         time: 1652002000,
     },
     {
-        image_url:
-            "https://media.istockphoto.com/id/937776750/photo/cat-eating-out-of-bowl.jpg?s=612x612&w=0&k=20&c=G5779rGIyUzKEkTL48JFKxqahbaWpj6d9G1y2Oi3Omg=",
+        url: "https://media.istockphoto.com/id/937776750/photo/cat-eating-out-of-bowl.jpg?s=612x612&w=0&k=20&c=G5779rGIyUzKEkTL48JFKxqahbaWpj6d9G1y2Oi3Omg=",
         time: 1612002000,
     },
     {
-        image_url:
-            "https://www.shutterstock.com/image-photo/cute-little-kitten-bowl-granules-260nw-508351093.jpg",
+        url: "https://www.shutterstock.com/image-photo/cute-little-kitten-bowl-granules-260nw-508351093.jpg",
         time: 1612002000,
     },
     {
-        image_url:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9t1dbd8CgFXw0FaKI4WxXPh_lK7-G2L25bQ&s",
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9t1dbd8CgFXw0FaKI4WxXPh_lK7-G2L25bQ&s",
         time: 1632002000,
     },
     {
-        image_url:
-            "https://www.shutterstock.com/image-photo/cute-little-kitten-bowl-granules-260nw-508351093.jpg",
+        url: "https://www.shutterstock.com/image-photo/cute-little-kitten-bowl-granules-260nw-508351093.jpg",
         time: 1622002000,
     },
 ];
 
-app.get("/api/gallery", (req, res) => {
+app.get("/api/image", (req, res) => {
     res.json({ images });
 });
 
+app.get("/api/video", (req, res) => {
+    res.json({ videos: images });
+});
 // Endpoint: /api/foodDrink/
 let feedList = [
     { value: 100, time: 1692000000 },
@@ -119,14 +113,14 @@ let humidList = [
 ];
 
 app.post("/api/environment/", (req, res) => {
-    const { start, end } = req.body;
-    const filterTempList = tempList.filter(
-        (item) => item.time >= start && item.time <= end
-    );
-    const filterHumidList = humidList.filter(
-        (item) => item.time >= start && item.time <= end
-    );
-    res.json({ tempList: filterTempList, humidList: filterHumidList });
+    // remember to filter based on time first
+    const environmentHistory = [
+        { temperature: 24, humidity: 60, time: 1692000000 },
+        { temperature: 25, humidity: 55, time: 1692001000 },
+        { temperature: 26, humidity: 50, time: 1692002000 },
+        { temperature: 26, humidity: 55, time: 1692002000 },
+    ];
+    res.json({ environmentHistory });
 });
 
 // Endpoint: /api/schedule/
@@ -179,8 +173,11 @@ app.delete("/api/schedule/:id", (req, res) => {
 });
 
 // Endpoint: /api/camera
-app.get("/api/video", (req, res) => {
-    res.json({ images });
+app.get("/api/camera", (req, res) => {
+    res.json({
+        url: "https://www.youtube.com/embed/xVKVYIjmXCU",
+        time: 12312382232,
+    });
 });
 
 // Endpoint: /api/feedNow
