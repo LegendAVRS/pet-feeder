@@ -41,7 +41,7 @@ const AddSchedule = ({
                     value: feedAmount,
                     duration: feedDuration,
                     isOn: true,
-                    url: "ihadiashdkasjhd", // placeholder
+                    url: selectedFile?.name, // placeholder
                 },
                 FEED_SCHEDULE_URL
             );
@@ -52,6 +52,7 @@ const AddSchedule = ({
         } catch (error) {
             // put toast's zIndex higher than the modal
             modalRef.current?.close();
+            setLoading(false);
             toast.error("Error: Failed to edit schedule");
         }
     };
@@ -60,7 +61,10 @@ const AddSchedule = ({
         // convert hour and minute to the correct format string
         const hourStr = hour < 10 ? "0" + hour : hour.toString();
         const minuteStr = minute < 10 ? "0" + minute : minute.toString();
-        if (schedule.find((s) => s.time === `${hourStr}${minuteStr}`)) {
+        if (
+            schedule.find((s) => s.time === `${hourStr}${minuteStr}`) &&
+            chosenSchedule!.time !== `${hourStr}${minuteStr}`
+        ) {
             alert("Time already exists in schedule");
             return;
         }
@@ -76,7 +80,7 @@ const AddSchedule = ({
                     value: feedAmount,
                     duration: feedDuration,
                     isOn: chosenSchedule!.isOn,
-                    url: "ihadiashdkasjhd", // placeholder
+                    url: selectedFile?.name,
                 },
                 FEED_SCHEDULE_URL + `/${chosenSchedule!.id}`
             );
@@ -86,6 +90,7 @@ const AddSchedule = ({
             modalRef.current?.close();
         } catch (error) {
             modalRef.current?.close();
+            setLoading(false);
             toast.error("Error: Failed to edit schedule");
         }
     };
@@ -94,7 +99,7 @@ const AddSchedule = ({
         isAdd === false
             ? {
                   hour: chosenSchedule!.time.slice(0, 2),
-                  minute: chosenSchedule!.time.slice(3, 5),
+                  minute: chosenSchedule!.time.slice(2, 4),
                   value: chosenSchedule!.value,
                   feed_duration: chosenSchedule!.feed_duration,
               }
@@ -104,19 +109,24 @@ const AddSchedule = ({
                   value: 10,
                   feed_duration: 10,
               };
-
+    console.log(chosenSchedule);
     const [hour, setHour] = useState(parseInt(defaultVal.hour));
     const [minute, setMinute] = useState(parseInt(defaultVal.minute));
     const [feedAmount, setFeedAmount] = useState(defaultVal.value);
     const [feedDuration, setFeedDuration] = useState(10);
-
     useEffect(() => {
         if (isAdd === false) {
             setHour(parseInt(defaultVal.hour));
             setMinute(parseInt(defaultVal.minute));
             setFeedAmount(defaultVal.value);
+            setFeedDuration(defaultVal.feed_duration);
+            if (chosenSchedule!.url) {
+                setSelectedFile(new File([], chosenSchedule!.url));
+            }
+            return;
         }
-    }, [isAdd]);
+        setSelectedFile(null);
+    }, [isAdd, chosenSchedule]);
 
     return (
         <section className="relative">
@@ -160,7 +170,7 @@ const AddSchedule = ({
                         onClick={() => {
                             const input = document.createElement("input");
                             input.type = "file";
-                            // input.accept = "audio/*"; // accept audio files only
+                            input.accept = "audio/*"; // accept audio files only
                             input.onchange = (e: any) => {
                                 if (e.target.files.length > 0) {
                                     setSelectedFile(e.target.files[0]);
