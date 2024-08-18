@@ -4,6 +4,7 @@ import { FEED_SCHEDULE_URL, FeedData } from "./utils/types";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { XMarkIcon } from "@heroicons/react/16/solid";
+import { MAX_FOOD_THRESHOLD } from "./utils/global";
 
 interface Props {
     isAdd: boolean;
@@ -125,15 +126,20 @@ const AddSchedule = ({
                     maxLength={2} // optional: restrict input to 2 characters
                 ></input>
             </div>
-            <div className="p-4 rounded-2xl border border-slate-300 flex items-center justify-between">
+            <div className="p-4 rounded-2xl border border-slate-300 flex items-center justify-between mt-4">
                 <p>Audio</p>
                 <div className="flex items-center gap-2">
+                    {selectedFile && (
+                        <p className="max-w-28 overflow-hidden whitespace-nowrap overflow-ellipsis">
+                            {selectedFile.name}
+                        </p>
+                    )}
                     <button
                         className="font-semibold py-1 px-4 bg-black text-white rounded-full"
                         onClick={() => {
                             const input = document.createElement("input");
                             input.type = "file";
-                            input.accept = "audio/*"; // accept audio files only
+                            // input.accept = "audio/*"; // accept audio files only
                             input.onchange = (e: any) => {
                                 if (e.target.files.length > 0) {
                                     setSelectedFile(e.target.files[0]);
@@ -144,7 +150,6 @@ const AddSchedule = ({
                     >
                         Select file
                     </button>
-                    {selectedFile && <p>{selectedFile.name}</p>}
                 </div>
             </div>
             <div className="h-4"></div>
@@ -153,13 +158,15 @@ const AddSchedule = ({
                 <div className="flex gap-1 py-1">
                     <input
                         className="w-12 text-right"
-                        type="text"
+                        type="number"
                         inputMode="numeric"
                         placeholder="30"
                         value={feedAmount}
                         onChange={(e) => {
                             setFeedAmount(parseInt(e.target.value));
                         }}
+                        max={MAX_FOOD_THRESHOLD}
+                        min={1}
                     />
                     <p>g</p>
                 </div>
@@ -170,13 +177,15 @@ const AddSchedule = ({
                 <div className="flex gap-1 py-1">
                     <input
                         className="w-12 text-right"
-                        type="text"
+                        type="number"
                         inputMode="numeric"
                         placeholder="30"
                         value={feedDuration}
                         onChange={(e) => {
                             setFeedDuration(parseInt(e.target.value));
                         }}
+                        max={60}
+                        min={1}
                     />
                     <p>mins</p>
                 </div>

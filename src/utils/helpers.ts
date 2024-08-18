@@ -1,5 +1,5 @@
 import { ChartData, ChartOptions } from "chart.js";
-import { GalleryData, URL_HEADER } from "./types";
+import { GalleryData, ImagesData, URL_HEADER, VideosData } from "./types";
 
 export const getLastValue = <T>(arr: Array<T>): T => {
     return arr[arr.length - 1];
@@ -11,12 +11,12 @@ export type GalleryItem = {
 };
 
 export const getImagesInGroup = (
-    imagesData: Array<GalleryData>,
-    videoData: Array<GalleryData>
+    imagesData: ImagesData,
+    videoData: VideosData
 ) => {
     let galleryDataInGroup: { [key: string]: GalleryItem[] } = {};
 
-    imagesData.forEach((image) => {
+    imagesData.images.forEach((image) => {
         const capturedDate = new Date(image.time * 1000);
         const dateKey = capturedDate.toISOString().split("T")[0]; // Get date part in YYYY-MM-DD format
 
@@ -27,7 +27,7 @@ export const getImagesInGroup = (
         galleryDataInGroup[dateKey].push({ url: image.url, isVideo: false });
     });
 
-    videoData.forEach((video) => {
+    videoData.videos.forEach((video) => {
         const capturedDate = new Date(video.time * 1000);
         const dateKey = capturedDate.toISOString().split("T")[0]; // Get date part in YYYY-MM-DD format
 

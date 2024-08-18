@@ -63,10 +63,10 @@ const ChangeSchedule = () => {
     return (
         <section className="h-screen w-screen overflow-hidden">
             <div className="h-screen w-screen overflow-hidden flex flex-col">
-                <NavBar label="Feed Schedule">
+                <NavBar label="Schedule">
                     <button
                         role="button"
-                        className="font-semibold p-4 bg-black text-white rounded-full"
+                        className="font-semibold text-sm p-4 bg-black text-white rounded-full"
                         onClick={() => {
                             setChosenIndex(-1);
                             modalRef.current?.showModal();
@@ -108,13 +108,6 @@ const ChangeSchedule = () => {
                                             Amount:
                                         </span>{" "}
                                         {thingy.value}g
-                                    </p>
-                                    ,
-                                    <p>
-                                        <span className="font-semibold">
-                                            Duration:
-                                        </span>{" "}
-                                        {thingy.duration} minutes
                                     </p>
                                 </div>
 

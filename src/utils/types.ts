@@ -32,7 +32,7 @@ export type EnvironmentData = {
 export type EnvironmentWrapperData = {
     environmentHistory: [
         {
-            tempature: number;
+            temperature: number;
             humidity: number;
             time: number;
         }
@@ -69,6 +69,10 @@ export type GalleryData = {
 
 export type ImagesData = {
     images: GalleryData[];
+};
+
+export type VideosData = {
+    videos: GalleryData[];
 };
 
 export const URL_HEADER = "http://localhost:3000";

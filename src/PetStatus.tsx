@@ -48,33 +48,30 @@ const PetStatus = () => {
     return (
         <>
             <NavBar label="Pet Status"></NavBar>
-            <section className="px-6">
-                <div className="flex flex-col text-xl font-bold items-center gap-2">
-                    <div>
-                        <p>From:</p>
-                        <DatePicker
-                            selected={startDate}
-                            onChange={(date) => setStartDate(date)}
-                            selectsStart
-                            startDate={startDate || undefined}
-                            endDate={endDate || undefined}
-                            className="border border-slate-300 rounded-md px-4 py-1"
-                        />
-                    </div>
-                    <div>
-                        <p>to</p>
-                        <DatePicker
-                            selected={endDate}
-                            onChange={(date) => setEndDate(date)}
-                            selectsEnd
-                            startDate={startDate || undefined}
-                            endDate={endDate || undefined}
-                            minDate={startDate || undefined}
-                            className="border border-slate-300 rounded-md px-4 py-1"
-                        />
-                    </div>
+            <section className="px-6 flex flex-col items-center">
+                <div className="flex text-lg font-bold items-center gap-2">
+                    <p>From:</p>
+                    <DatePicker
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        selectsStart
+                        startDate={startDate || undefined}
+                        endDate={endDate || undefined}
+                        className="border border-slate-300 rounded-md px-2 py-1 w-[8rem] text-center"
+                    />
+
+                    <p>to</p>
+                    <DatePicker
+                        selected={endDate}
+                        onChange={(date) => setEndDate(date)}
+                        selectsEnd
+                        startDate={startDate || undefined}
+                        endDate={endDate || undefined}
+                        minDate={startDate || undefined}
+                        className="border border-slate-300 rounded-md px-2 py-1 w-[8rem] text-center"
+                    />
                 </div>
-                <div className="border border-slate-300 m-2"></div>
+                <div className="border border-slate-300 m-2 w-full"></div>
                 <div className="flex justify-between items-center">
                     <h3 className="text-2xl font-semibold">Eating time</h3>
                 </div>

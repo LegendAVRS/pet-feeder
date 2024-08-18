@@ -117,8 +117,12 @@ const MainPage = () => {
                             className="w-full h-full object-cover"
                         />
                         <div className="absolute top-0 left-0 w-full h-full z-20 bg-gradient-to-t from-black to-transparent to-25%"></div>
-                        <p className="text-white z-50 absolute bottom-4 left-4 text-2xl font-semibold">
-                            Captured on {unixToDateTimeString(lastImgData.time)}
+                        <p className="text-white z-50 absolute bottom-4 left-4 text-2xl font-semibold flex flex-col">
+                            <span>Captured on</span>
+                            <span>
+                                {" "}
+                                {unixToDateTimeString(lastImgData.time)}
+                            </span>
                         </p>
                     </Link>
                     <Link
@@ -160,7 +164,7 @@ const MainPage = () => {
                             to="./change-schedule"
                             className="basis-1/2 text-center font-semibold py-1 px-4 bg-black text-white rounded-full"
                         >
-                            Change schedule
+                            Edit schedule
                         </Link>
                     </div>
                 </section>

@@ -910,23 +910,6 @@ html {
   background-color: var(--fallback-bc,oklch(var(--bc)/0.2));
 }
 
-.range {
-  height: 1.5rem;
-  width: 100%;
-  cursor: pointer;
-  -moz-appearance: none;
-       appearance: none;
-  -webkit-appearance: none;
-  --range-shdw: var(--fallback-bc,oklch(var(--bc)/1));
-  overflow: hidden;
-  border-radius: var(--rounded-box, 1rem);
-  background-color: transparent;
-}
-
-.range:focus {
-  outline: none;
-}
-
 .toast {
   position: fixed;
   display: flex;
@@ -1304,65 +1287,6 @@ html {
   }
 }
 
-.range:focus-visible::-webkit-slider-thumb {
-  --focus-shadow: 0 0 0 6px var(--fallback-b1,oklch(var(--b1)/1)) inset, 0 0 0 2rem var(--range-shdw) inset;
-}
-
-.range:focus-visible::-moz-range-thumb {
-  --focus-shadow: 0 0 0 6px var(--fallback-b1,oklch(var(--b1)/1)) inset, 0 0 0 2rem var(--range-shdw) inset;
-}
-
-.range::-webkit-slider-runnable-track {
-  height: 0.5rem;
-  width: 100%;
-  border-radius: var(--rounded-box, 1rem);
-  background-color: var(--fallback-bc,oklch(var(--bc)/0.1));
-}
-
-.range::-moz-range-track {
-  height: 0.5rem;
-  width: 100%;
-  border-radius: var(--rounded-box, 1rem);
-  background-color: var(--fallback-bc,oklch(var(--bc)/0.1));
-}
-
-.range::-webkit-slider-thumb {
-  position: relative;
-  height: 1.5rem;
-  width: 1.5rem;
-  border-radius: var(--rounded-box, 1rem);
-  border-style: none;
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
-  appearance: none;
-  -webkit-appearance: none;
-  top: 50%;
-  color: var(--range-shdw);
-  transform: translateY(-50%);
-  --filler-size: 100rem;
-  --filler-offset: 0.6rem;
-  box-shadow: 0 0 0 3px var(--range-shdw) inset,
-      var(--focus-shadow, 0 0),
-      calc(var(--filler-size) * -1 - var(--filler-offset)) 0 0 var(--filler-size);
-}
-
-.range::-moz-range-thumb {
-  position: relative;
-  height: 1.5rem;
-  width: 1.5rem;
-  border-radius: var(--rounded-box, 1rem);
-  border-style: none;
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
-  top: 50%;
-  color: var(--range-shdw);
-  --filler-size: 100rem;
-  --filler-offset: 0.5rem;
-  box-shadow: 0 0 0 3px var(--range-shdw) inset,
-      var(--focus-shadow, 0 0),
-      calc(var(--filler-size) * -1 - var(--filler-offset)) 0 0 var(--filler-size);
-}
-
 @keyframes rating-pop {
   0% {
     transform: translateY(-0.125em);
@@ -1578,6 +1502,10 @@ html {
   left: 1rem;
 }
 
+.right-1 {
+  right: 0.25rem;
+}
+
 .right-4 {
   right: 1rem;
 }
@@ -1586,28 +1514,16 @@ html {
   top: 0px;
 }
 
+.top-1 {
+  top: 0.25rem;
+}
+
 .top-1\/2 {
   top: 50%;
 }
 
 .top-4 {
   top: 1rem;
-}
-
-.right-2 {
-  right: 0.5rem;
-}
-
-.top-2 {
-  top: 0.5rem;
-}
-
-.right-1 {
-  right: 0.25rem;
-}
-
-.top-1 {
-  top: 0.25rem;
 }
 
 .z-20 {
@@ -1655,6 +1571,10 @@ html {
   aspect-ratio: 1 / 1;
 }
 
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
 .h-1 {
   height: 0.25rem;
 }
@@ -1675,6 +1595,10 @@ html {
   height: 20vh;
 }
 
+.h-\[80vh\] {
+  height: 80vh;
+}
+
 .h-full {
   height: 100%;
 }
@@ -1683,20 +1607,12 @@ html {
   height: 100vh;
 }
 
-.h-\[80vh\] {
-  height: 80vh;
-}
-
 .max-h-52 {
   max-height: 13rem;
 }
 
 .max-h-\[100\%\] {
   max-height: 100%;
-}
-
-.max-h-screen {
-  max-height: 100vh;
 }
 
 .max-h-\[80vh\] {
@@ -1723,8 +1639,52 @@ html {
   width: 100vw;
 }
 
+.w-5 {
+  width: 1.25rem;
+}
+
+.w-\[10rem\] {
+  width: 10rem;
+}
+
+.w-\[7rem\] {
+  width: 7rem;
+}
+
+.w-\[8rem\] {
+  width: 8rem;
+}
+
+.w-1\/2 {
+  width: 50%;
+}
+
 .max-w-48 {
   max-width: 12rem;
+}
+
+.max-w-\[60vw\] {
+  max-width: 60vw;
+}
+
+.max-w-20 {
+  max-width: 5rem;
+}
+
+.max-w-5 {
+  max-width: 1.25rem;
+}
+
+.max-w-10 {
+  max-width: 2.5rem;
+}
+
+.max-w-40 {
+  max-width: 10rem;
+}
+
+.max-w-28 {
+  max-width: 7rem;
 }
 
 .grow {
@@ -1807,6 +1767,14 @@ html {
 
 .overflow-y-scroll {
   overflow-y: scroll;
+}
+
+.overflow-ellipsis {
+  text-overflow: ellipsis;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
 }
 
 .rounded-2xl {
@@ -1928,6 +1896,11 @@ html {
   padding-bottom: 2rem;
 }
 
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .pr-4 {
   padding-right: 1rem;
 }
@@ -1967,6 +1940,11 @@ html {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .font-bold {

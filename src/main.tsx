@@ -15,7 +15,7 @@ import ErrorPage from "./ErrorPage.tsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const App = () => (
+export const App = () => (
     <ErrorBoundary
         fallbackRender={({ error }) => (
             <ErrorPage
