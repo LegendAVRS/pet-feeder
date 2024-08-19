@@ -144,7 +144,9 @@ export const getLineChart = (
     }
 
     const chartData: ChartData<"line"> = {
-        labels: data.map((entry) => new Date(entry.time).toLocaleDateString()),
+        labels: data.map((entry) =>
+            new Date(entry.time * 1000).toLocaleDateString()
+        ),
         datasets: [
             {
                 label: label,

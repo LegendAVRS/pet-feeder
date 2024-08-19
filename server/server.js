@@ -114,22 +114,36 @@ let humidList = [
 
 app.post("/api/environment/", (req, res) => {
     // remember to filter based on time first
-    const environmentHistory = [
-        { temperature: 24, humidity: 60, time: 1692000000 },
-        { temperature: 25, humidity: 55, time: 1692001000 },
-        { temperature: 26, humidity: 50, time: 1692002000 },
-        { temperature: 26, humidity: 55, time: 1692002000 },
-    ];
+    // time is in year 2024
+    const environmentHistory = [];
+    // generate 10 different dates
+    for (let i = 0; i < 10; i++) {
+        const time = 1724006662 + i * 100000;
+        environmentHistory.push({
+            time,
+            temperature: Math.floor(Math.random() * 1000) + 100,
+            humidity: Math.floor(Math.random() * 1000) + 100,
+        });
+    }
+    // console.log(environmentHistory);
     res.json({ environmentHistory });
 });
 
 // Endpoint: /api/schedule/
 let schedule = [
-    { id: 1, value: 50, time: "2040", isOn: true, duration: 5 },
-    { id: 2, value: 60, time: "1000", isOn: false, duration: 10 },
+    { id: 1, value: 50, time: "20:40:00", isOn: true, duration: 5 },
+    { id: 2, value: 60, time: "10:00:00", isOn: false, duration: 10 },
 ];
 
 app.get("/api/schedule", (req, res) => {
+    // make time into something like 2040
+    schedule = schedule.map((s) => {
+        const time = s.time.split(":");
+        const newTime = time[0] + time[1];
+        return { ...s, time: newTime };
+    });
+    // sort by time (sort string string)
+    schedule.sort((a, b) => a.time.localeCompare(b.time));
     res.json({ schedule });
 });
 
