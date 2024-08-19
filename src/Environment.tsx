@@ -34,16 +34,24 @@ const Environment = () => {
         return <LoadingPage></LoadingPage>;
     }
 
-    const data: EnvironmentData = {
-        tempList: dataWrapper.environmentHistory.map((env) => ({
-            value: env.temperature,
-            time: env.time,
-        })),
-        humidList: dataWrapper.environmentHistory.map((env) => ({
-            value: env.humidity,
-            time: env.time,
-        })),
+    console.log(dataWrapper);
+    let data: EnvironmentData = {
+        tempList: [],
+        humidList: [],
     };
+
+    if (dataWrapper.environmentHistory) {
+        data = {
+            tempList: dataWrapper.environmentHistory.map((env) => ({
+                value: env.temperature,
+                time: env.time,
+            })),
+            humidList: dataWrapper.environmentHistory.map((env) => ({
+                value: env.humidity,
+                time: env.time,
+            })),
+        };
+    }
 
     const temperatureChart = getLineChart(data.tempList, "Celsius");
     const humidityChart = getLineChart(data.humidList, "%");

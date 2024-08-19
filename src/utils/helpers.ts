@@ -17,6 +17,10 @@ export const getImagesInGroup = (
 ) => {
     let galleryDataInGroup: { [key: string]: GalleryItem[] } = {};
 
+    if (!imagesData.images || !videoData.videos) {
+        return galleryDataInGroup;
+    }
+
     imagesData.images.forEach((image) => {
         const capturedDate = new Date(image.time * 1000);
         const dateKey = capturedDate.toISOString().split("T")[0]; // Get date part in YYYY-MM-DD format

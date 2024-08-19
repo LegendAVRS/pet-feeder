@@ -19,7 +19,20 @@ const Gallery = () => {
     if (!data_image || !data_video) {
         return <LoadingPage></LoadingPage>;
     }
+
     const stuff = getImagesInGroup(data_image, data_video);
+    if (Object.keys(stuff).length === 0) {
+        return (
+            <>
+                <NavBar label="Gallery"></NavBar>
+                <section className="px-6">
+                    <p className="text-xl font-bold py-2">
+                        No images or videos found
+                    </p>
+                </section>
+            </>
+        );
+    }
     return (
         <>
             <NavBar label="Gallery"></NavBar>

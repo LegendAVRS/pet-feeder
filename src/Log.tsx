@@ -6,7 +6,6 @@ import LoadingPage from "./LoadingPage";
 
 const Log = () => {
     const { data, error } = useData<LogsData>(LOG_URL);
-
     if (error) {
         throw new Error(error);
     }
@@ -19,7 +18,7 @@ const Log = () => {
             <NavBar label="Device Log"></NavBar>
             <section className="px-6">
                 <div className="p-4 rounded-md bg-gray-300 h-[80vh] max-h-[80vh] overflow-x-auto overflow-y-scroll">
-                    {data?.logs.map((log, index) => (
+                    {data?.logs?.map((log, index) => (
                         <div key={index} className="p-2">
                             {log.time}: {log.log}
                         </div>

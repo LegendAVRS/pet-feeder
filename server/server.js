@@ -121,8 +121,8 @@ app.post("/api/environment/", (req, res) => {
         const time = 1724006662 + i * 100000;
         environmentHistory.push({
             time,
-            temperature: Math.floor(Math.random() * 1000) + 100,
-            humidity: Math.floor(Math.random() * 1000) + 100,
+            temperature: Math.floor(Math.random() * 5) + 3,
+            humidity: Math.floor(Math.random() * 800) + 100,
         });
     }
     // console.log(environmentHistory);
