@@ -13,11 +13,11 @@ const MiniLog = () => {
     return (
         <>
             <section className="px-6 mt-4 relative">
-                <div className="p-4 rounded-md bg-gray-300 h-52 max-h-52 overflow-auto">
+                <div className="flex flex-col p-4 rounded-md bg-gray-300 h-52 max-h-52 overflow-hidden">
                     {data?.logs.map((log, index) => (
-                        <div key={index} className="p-2">
-                            {unixToDateTimeString(log.time)}: {log.log}
-                        </div>
+                        <code key={index} className="p-2">
+                            [{unixToDateTimeString(log.time)}]:{log.log}
+                        </code>
                     ))}
                 </div>
                 <Link to={"/log"} className="flex w-full justify-end mt-2">

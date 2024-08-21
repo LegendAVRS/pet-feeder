@@ -8,7 +8,7 @@ import { postRequest } from "./utils/helpers";
 import { toast } from "react-toastify";
 
 const Status = () => {
-    const { data, error } = useData<DevData>(DEVICE_URL);
+    const { data, error } = useData<any>(DEVICE_URL);
 
     if (error) {
         throw new Error(error);
