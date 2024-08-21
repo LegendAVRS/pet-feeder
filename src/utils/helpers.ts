@@ -218,8 +218,6 @@ export const postRequest = async (data: any, endpoint: string) => {
                 "Network response was not ok " + response.statusText
             );
         }
-
-        const responseData = await response.json();
     } catch (error: any) {
         throw new Error(error);
     }

@@ -29,7 +29,9 @@ const VideoCall = () => {
 
                 <p className="text-xl flex flex-col items-center">
                     <span>Started capturing on</span>
-                    <span>{unixToDateTimeString(data.time)}</span>
+                    <span>
+                        {unixToDateTimeString(new Date().getTime() / 1000)}
+                    </span>
                 </p>
             </section>
         </>

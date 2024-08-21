@@ -10,7 +10,6 @@ export type HomeData = {
 
 export type VideoData = {
     url: string;
-    time: number;
 };
 
 export type DevData = {

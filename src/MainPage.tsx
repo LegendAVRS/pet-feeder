@@ -67,7 +67,7 @@ const MainPage = () => {
     const { pieChartData: foodChartData, pieChartOption: foodChartOption } =
         getPieChart(
             "Food (grams)",
-            [data.food, MAX_FOOD_THRESHOLD],
+            [data.food, MAX_FOOD_THRESHOLD - data.food],
             FOOD_WARNING_THRESHOLD,
             false
         );
@@ -75,7 +75,7 @@ const MainPage = () => {
     const { pieChartData: waterChartData, pieChartOption: waterChartOption } =
         getPieChart(
             "Water (ml)",
-            [data.water, MAX_WATER_THRESHOLD],
+            [data.water, MAX_WATER_THRESHOLD - data.water],
             WATER_WARNING_THRESHOLD,
             false
         );
@@ -83,14 +83,14 @@ const MainPage = () => {
     const { pieChartData: tempChartData, pieChartOption: tempChartOption } =
         getPieChart(
             "Temparature (°C)",
-            [data.temp, MAX_TEMP_THRESHOLD],
+            [data.temp, MAX_TEMP_THRESHOLD - data.temp],
             TEMPERATURE_WARNING_THRESHOLD
         );
 
     const { pieChartData: humidChartData, pieChartOption: humidChartOption } =
         getPieChart(
             "Humidity (%)",
-            [data.humid, MAX_HUMIDITY_THRESHOLD],
+            [data.humid, MAX_HUMIDITY_THRESHOLD - data.humid],
             HUMIDITY_WARNING_THRESHOLD
         );
 
@@ -103,6 +103,7 @@ const MainPage = () => {
             toast.error("Error: Failed to feed");
         }
     };
+
     return (
         <>
             <nav className="h-20 p-6 flex items-center justify-between font-bold text-3xl">
