@@ -104,8 +104,6 @@ const MainPage = () => {
         }
     };
 
-    data.food = 1500;
-
     return (
         <>
             <nav className="h-20 p-6 flex items-center justify-between font-bold text-3xl">
