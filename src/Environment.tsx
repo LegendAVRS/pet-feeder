@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Line } from "react-chartjs-2";
@@ -11,21 +11,25 @@ import LoadingPage from "./LoadingPage";
 import NavBar from "./NavBar";
 
 const Environment = () => {
-    const [startDate, setStartDate] = useState<Date | null>(null);
-    const [endDate, setEndDate] = useState<Date | null>(null);
+    const [startDate, setStartDate] = useState<Date>(new Date());
+    const endDate = useMemo(() => {
+        const date = new Date(startDate?.getTime() || "")
+        date.setDate((date.getDate() + 31) % 30)
+        return date
+    }, [startDate])
     const {
         data: dataWrapper,
         refreshData,
         error,
     } = useData<EnvironmentWrapperData>(ENVIRONMENT_HISTORY_URL, {
-        startDate: startDate?.getTime(),
-        endDate: endDate?.getTime(),
+        startDate: Math.floor(startDate.getTime() / 1000),
+        endDate: Math.floor(endDate.getTime() / 1000),
     });
 
     useEffect(() => {
-        refreshData();
+       refreshData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [startDate, endDate]);
+    }, [startDate]);
 
     if (error) {
         throw new Error(error);
@@ -61,23 +65,13 @@ const Environment = () => {
             <NavBar label="Environment"></NavBar>
             <section className="px-6 flex flex-col items-center">
                 <div className="flex text-lg font-bold items-center gap-2">
-                    <p>From:</p>
+                    <p>In:</p>
                     <DatePicker
                         selected={startDate}
-                        onChange={(date) => setStartDate(date)}
+                        onChange={(date) => setStartDate(date || new Date())}
                         selectsStart
                         startDate={startDate || undefined}
-                        endDate={endDate || undefined}
-                        className="border border-slate-300 rounded-md px-2 py-1 w-[8rem] text-center"
-                    />
-                    <p>to</p>
-                    <DatePicker
-                        selected={endDate}
-                        onChange={(date) => setEndDate(date)}
-                        selectsEnd
-                        startDate={startDate || undefined}
-                        endDate={endDate || undefined}
-                        minDate={startDate || undefined}
+                        endDate={undefined}
                         className="border border-slate-300 rounded-md px-2 py-1 w-[8rem] text-center"
                     />
                 </div>

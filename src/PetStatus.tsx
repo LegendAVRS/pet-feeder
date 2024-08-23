@@ -10,16 +10,19 @@ import useData from "./hooks/useData";
 import LoadingPage from "./LoadingPage";
 
 const PetStatus = () => {
-    const [startDate, setStartDate] = useState<Date | null>(null);
-    const [endDate, setEndDate] = useState<Date | null>(null);
-
+    const [startDate, setStartDate] = useState<Date>((() => {
+        const tmp = new Date();
+        tmp.setMonth((tmp.getMonth() + 11) % 12);
+        return tmp;
+    })());
+    const [endDate, setEndDate] = useState<Date>(new Date());
     const {
         data: feedData,
         refreshData: refreshData1,
         error: error1,
     } = useData<FeedHistoryData>(FEED_HISTORY_URL, {
-        startDate: startDate?.getTime(),
-        endDate: endDate?.getTime(),
+        startDate: Math.floor(startDate.getTime() / 1000),
+        endDate: Math.floor(endDate.getTime() / 1000),
     });
 
     const {
@@ -27,8 +30,8 @@ const PetStatus = () => {
         refreshData: refreshData2,
         error: error2,
     } = useData<WaterHistoryData>(WATER_HISTORY_URL, {
-        startDate: startDate?.getTime(),
-        endDate: endDate?.getTime(),
+        startDate: Math.floor(startDate.getTime() / 1000),
+        endDate: Math.floor(endDate.getTime() / 1000),
     });
 
     useEffect(() => {
@@ -49,8 +52,8 @@ const PetStatus = () => {
         return <LoadingPage></LoadingPage>;
     }
 
-    const foodChart = getLineChart(feedData.feedList, "Grams", 1000);
-    const waterChart = getLineChart(waterData.waterList, "Milliliters", 1000);
+    const foodChart = getLineChart(feedData.feedList, "Seconds", 1200);
+    const waterChart = getLineChart(waterData.waterList, "Milliliters", 50);
     return (
         <>
             <NavBar label="Pet Status"></NavBar>
@@ -59,7 +62,7 @@ const PetStatus = () => {
                     <p>From:</p>
                     <DatePicker
                         selected={startDate}
-                        onChange={(date) => setStartDate(date)}
+                        onChange={(date) => setStartDate(date || new Date())}
                         selectsStart
                         startDate={startDate || undefined}
                         endDate={endDate || undefined}
@@ -69,7 +72,7 @@ const PetStatus = () => {
                     <p>to</p>
                     <DatePicker
                         selected={endDate}
-                        onChange={(date) => setEndDate(date)}
+                        onChange={(date) => setEndDate(date || new Date())}
                         selectsEnd
                         startDate={startDate || undefined}
                         endDate={endDate || undefined}

@@ -1,6 +1,5 @@
 import useData from "./hooks/useData";
 import NavBar from "./NavBar";
-import { DevData } from "./utils/types";
 import { DEVICE_URL, RESTART_URL } from "./utils/global";
 import MiniLog from "./MiniLog";
 import LoadingPage from "./LoadingPage";
@@ -46,17 +45,22 @@ const Status = () => {
                     <h3 className=" font-bold text-2xl">Device information</h3>
                     <div className="h-1"></div>
                     <p className="text-lg font-medium">Software version</p>
-                    <p className="text-md font-medium">{data.software}</p>
+                    <p className="text-md font-medium">{data?.software}</p>
                     <div className="h-1"></div>
                     <p className="text-lg font-medium">IP address</p>
-                    <p className="text-md font-medium">{data.ip}</p>
+                    <p className="text-md font-medium">{data?.ip}</p>
                     <div className="h-1"></div>
+                    <p className="text-lg font-medium">Chip</p>
+                    <p className="text-md font-medium">{data?.chip}</p>
                     <div className="h-1"></div>
-                    <p className="text-lg font-medium">Board</p>
-                    <p className="text-md font-medium">{data.board}</p>
+                    <p className="text-lg font-medium">Chip Spec</p>
+                    <p className="text-md font-medium">{data?.core} Core(s) @ {data?.cpu_freq_mhz}MHz</p>
+                    <div className="h-1"></div>
+                    <p className="text-lg font-medium">Free ram</p>
+                    <p className="text-md font-medium">{data?.free_heap} byte</p>
                     <div className="h-1"></div>
                     <p className="text-lg font-medium">Wifi</p>
-                    <p className="text-md font-medium">{data.wifi}</p>
+                    <p className="text-md font-medium">{data?.wifi}</p>
                     <div className="h-1"></div>
                 </div>
             </section>

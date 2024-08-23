@@ -59,6 +59,8 @@ const MainPage = () => {
     }
 
     console.log(data);
+    data.food = Math.floor(data.food)
+    data.water = Math.floor(data.water)
 
     const nextFeedData = data.nextFeed;
     const lastFeedData = data.prevFeed;
