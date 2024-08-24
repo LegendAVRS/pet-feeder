@@ -14,7 +14,6 @@ import {
     MAX_HUMIDITY_THRESHOLD,
     MAX_TEMP_THRESHOLD,
     MAX_WATER_THRESHOLD,
-    URL_HEADER,
 } from "./utils/global";
 import { HomeData } from "./utils/types";
 import {
@@ -51,19 +50,11 @@ const MainPage = () => {
     const warningTemp = getDegrees(inFahrenheit, TEMPERATURE_WARNING_THRESHOLD);
 
     useEffect(() => {
-        if (data?.temp && data?.temp > warningTemp) {
-            new Notification("Temperature Alert!", {
-                body: `Evironment temperature is too high: ${data.temp}°C`,
-            });
-        }
-    }, [data])
-
-    useEffect(() => {
         const tmp = setInterval(() => {
-            refreshData()
+            refreshData();
         }, 30000);
         return () => {
-            clearInterval(tmp)
+            clearInterval(tmp);
         };
     }, [refreshData]);
 
@@ -76,8 +67,8 @@ const MainPage = () => {
     }
 
     console.log(data);
-    data.food = Math.floor(data.food)
-    data.water = Math.floor(data.water)
+    data.food = Math.floor(data.food);
+    data.water = Math.floor(data.water);
 
     const nextFeedData = data.nextFeed;
     const lastFeedData = data.prevFeed;
@@ -87,6 +78,12 @@ const MainPage = () => {
     data.food = getGramInOunce(inOunce, data.food);
     data.water = getOunces(inOunce, data.water);
     data.nextFeed.value = getGramInOunce(inOunce, data.nextFeed.value);
+
+    if (data?.temp && data?.temp > warningTemp) {
+        new Notification("Temperature Alert!", {
+            body: `Evironment temperature is too high: ${data.temp}°C`,
+        });
+    }
 
     const food_label = inOunce ? "Food (oz)" : "Food (grams)";
     const water_label = inOunce ? "Water (oz)" : "Water (ml)";
