@@ -12,11 +12,11 @@ interface SettingsContextProps {
 
 // Create the context with default values
 const SettingsContext = createContext<SettingsContextProps>({
-    allowNoti: true,
+    allowNoti: false,
     setAllowNoti: () => {},
-    inFahrenheit: true,
+    inFahrenheit: false,
     setInFahrenheit: () => {},
-    inOunce: true,
+    inOunce: false,
     setInOunce: () => {},
 });
 
