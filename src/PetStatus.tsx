@@ -11,8 +11,12 @@ import LoadingPage from "./LoadingPage";
 import { useSettings } from "./SettingsContext";
 
 const PetStatus = () => {
-    const [startDate, setStartDate] = useState<Date | null>(null);
-    const [endDate, setEndDate] = useState<Date | null>(null);
+    const [startDate, setStartDate] = useState<Date>((() => {
+        const tmp = new Date();
+        tmp.setMonth(tmp.getMonth() - 1)
+        return tmp
+    })());
+    const [endDate, setEndDate] = useState<Date>(new Date());
     const { inOunce } = useSettings();
     const {
         data: feedData,

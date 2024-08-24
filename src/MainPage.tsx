@@ -34,40 +34,38 @@ import {
 import LoadingPage from "./LoadingPage";
 import { toast } from "react-toastify";
 import { useSettings } from "./SettingsContext";
+import { useEffect } from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-// const sensor_data = new EventSource(new URL("sse", URL_HEADER))
-
-// sensor_data.onopen = (ev) => {
-//     console.log("From service worker", ev)
-// }
-// sensor_data.onmessage = console.log
-// sensor_data.onerror = (ev) => {
-//     console.log("From service worker, error: ", ev)
-// }
 
 const MainPage = () => {
     const { data, error, refreshData } = useData<HomeData>(HOME_DATA_URL);
     const { inOunce, inFahrenheit } = useSettings();
 
-    // useEffect(() => {
-    //     const eventSource = new EventSource(URL_HEADER + HOME_DATA_URL);
+    const maxFood = getGramInOunce(inOunce, MAX_FOOD_THRESHOLD);
+    const maxWater = getOunces(inOunce, MAX_WATER_THRESHOLD);
+    const maxTemp = getDegrees(inFahrenheit, MAX_TEMP_THRESHOLD);
 
-    //     eventSource.onmessage = (event) => {
-    //         const alertData = JSON.parse(event.data);
-    //         if (alertData.type === "TEMPERATURE_ALERT") {
-    //             new Notification("Temperature Alert!", {
-    //                 body: `The feeder's temperature is too high: ${alertData.temp}°C`,
-    //             });
-    //             refreshData();
-    //         }
-    //     };
+    const warningFood = getGramInOunce(inOunce, FOOD_WARNING_THRESHOLD);
+    const warningWater = getOunces(inOunce, WATER_WARNING_THRESHOLD);
+    const warningTemp = getDegrees(inFahrenheit, TEMPERATURE_WARNING_THRESHOLD);
 
-    //     return () => {
-    //         eventSource.close(); // Clean up when the component unmounts
-    //     };
-    // }, [refreshData]);
+    useEffect(() => {
+        if (data?.temp && data?.temp > warningTemp) {
+            new Notification("Temperature Alert!", {
+                body: `Evironment temperature is too high: ${data.temp}°C`,
+            });
+        }
+    }, [data])
+
+    useEffect(() => {
+        const tmp = setInterval(() => {
+            refreshData()
+        }, 30000);
+        return () => {
+            clearInterval(tmp)
+        };
+    }, [refreshData]);
 
     if (error) {
         throw new Error(error);
@@ -89,15 +87,6 @@ const MainPage = () => {
     data.food = getGramInOunce(inOunce, data.food);
     data.water = getOunces(inOunce, data.water);
     data.nextFeed.value = getGramInOunce(inOunce, data.nextFeed.value);
-
-    const maxFood = getGramInOunce(inOunce, MAX_FOOD_THRESHOLD);
-    const maxWater = getOunces(inOunce, MAX_WATER_THRESHOLD);
-    const maxTemp = getDegrees(inFahrenheit, MAX_TEMP_THRESHOLD);
-
-    console.log(data.temp);
-    const warningFood = getGramInOunce(inOunce, FOOD_WARNING_THRESHOLD);
-    const warningWater = getOunces(inOunce, WATER_WARNING_THRESHOLD);
-    const warningTemp = getDegrees(inFahrenheit, TEMPERATURE_WARNING_THRESHOLD);
 
     const food_label = inOunce ? "Food (oz)" : "Food (grams)";
     const water_label = inOunce ? "Water (oz)" : "Water (ml)";
