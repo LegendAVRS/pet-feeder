@@ -1,3 +1,8 @@
+import { useState } from "react";
+import Lightbox from "yet-another-react-lightbox";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
 import useData from "./hooks/useData";
 import NavBar from "./NavBar";
 import { getImagesInGroup } from "./utils/helpers";
@@ -8,6 +13,10 @@ import LoadingPage from "./LoadingPage";
 const Gallery = () => {
     const { data: data_image, error: error1 } = useData<ImagesData>(IMAGE_URL);
     const { data: data_video, error: error2 } = useData<VideosData>(VIDEO_URL);
+
+    const [open, setOpen] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [slides, setSlides] = useState([]);
 
     if (error1) {
         throw new Error(error1);
@@ -33,6 +42,18 @@ const Gallery = () => {
             </>
         );
     }
+
+    const handleOpenLightbox = (images, index) => {
+        setSlides(
+            images.map((image) => ({
+                src: image.url,
+                type: image.isVideo ? "video" : "image",
+            }))
+        );
+        setCurrentIndex(index);
+        setOpen(true);
+    };
+
     return (
         <>
             <NavBar label="Gallery"></NavBar>
@@ -45,15 +66,27 @@ const Gallery = () => {
                                 image.isVideo ? (
                                     <video
                                         src={image.url}
-                                        className="aspect-square object-cover"
+                                        className="aspect-square object-cover cursor-pointer"
                                         key={`${image.url} ${ind} ${dateKey}`}
+                                        onClick={() =>
+                                            handleOpenLightbox(
+                                                stuff[dateKey],
+                                                ind
+                                            )
+                                        }
                                     ></video>
                                 ) : (
                                     <img
                                         src={image.url}
                                         alt=""
                                         key={`${image.url} ${ind} ${dateKey}`}
-                                        className="aspect-square  object-cover"
+                                        className="aspect-square object-cover cursor-pointer"
+                                        onClick={() =>
+                                            handleOpenLightbox(
+                                                stuff[dateKey],
+                                                ind
+                                            )
+                                        }
                                     />
                                 )
                             )}
@@ -61,6 +94,16 @@ const Gallery = () => {
                     </div>
                 ))}
             </section>
+
+            {open && (
+                <Lightbox
+                    open={open}
+                    close={() => setOpen(false)}
+                    slides={slides}
+                    plugins={[Thumbnails]}
+                    index={currentIndex}
+                />
+            )}
         </>
     );
 };
