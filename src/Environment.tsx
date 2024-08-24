@@ -12,9 +12,13 @@ import NavBar from "./NavBar";
 import { useSettings } from "./SettingsContext";
 
 const Environment = () => {
-    const [startDate, setStartDate] = useState<Date | null>(null);
     const { inFahrenheit } = useSettings();
-    const [endDate, setEndDate] = useState<Date | null>(null);
+    const [startDate, setStartDate] = useState<Date>(new Date());
+    const endDate = useMemo(() => {
+        const date = new Date(startDate?.getTime() || "")
+        date.setDate((date.getDate() + 31) % 30)
+        return date
+    }, [startDate])
     const {
         data: dataWrapper,
         refreshData,
