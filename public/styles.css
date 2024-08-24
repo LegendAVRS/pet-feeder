@@ -1673,10 +1673,6 @@ html {
   width: 100vw;
 }
 
-.min-w-40 {
-  min-width: 10rem;
-}
-
 .max-w-28 {
   max-width: 7rem;
 }
@@ -1741,10 +1737,6 @@ html {
 
 .gap-4 {
   gap: 1rem;
-}
-
-.gap-8 {
-  gap: 2rem;
 }
 
 .overflow-hidden {
@@ -2011,3 +2003,4 @@ body {
   width: 2px;
   height: 2px;
 }
+

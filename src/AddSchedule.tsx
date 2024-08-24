@@ -134,28 +134,26 @@ const AddSchedule = ({
             <h1 className="font-bold text-3xl">Add / Edit</h1>
             <div className="flex items-center justify-center gap-4 h-[20vh] mt-4">
                 <input
-                    type="text"
+                    type="number"
+                    inputMode="numeric"
                     className="aspect-square w-32 flex items-center justify-center rounded-2xl border border-slate-300 font-semibold text-center text-[5rem]"
                     onChange={(e) => {
-                        const value = parseInt(e.target.value);
-                        if (!isNaN(value) && value >= 0 && value <= 23) {
-                            setHour(value);
-                        }
+                        setHour(parseInt(e.target.value));
                     }}
                     value={hour}
                     maxLength={2} // optional: restrict input to 2 characters
+                    defaultValue={10}
                 ></input>
                 <input
-                    type="text"
+                    type="number"
+                    inputMode="numeric"
                     className="aspect-square w-32 flex items-center justify-center rounded-2xl border text-center border-slate-300 font-semibold text-[5rem]"
                     onChange={(e) => {
-                        const value = parseInt(e.target.value);
-                        if (!isNaN(value) && value >= 0 && value <= 59) {
-                            setMinute(value);
-                        }
+                        setMinute(parseInt(e.target.value));
                     }}
                     value={minute}
                     maxLength={2} // optional: restrict input to 2 characters
+                    defaultValue={10}
                 ></input>
             </div>
             <div className="p-4 rounded-2xl border border-slate-300 flex items-center justify-between mt-4">
@@ -223,8 +221,13 @@ const AddSchedule = ({
                 </div>
             </div>
             <button
-                onClick={() =>
-                    isAdd === false ? handleEditSchedule() : handleAddSchedule()
+                onClick={() => {
+                    if (!isNaN(minute) && minute >= 0 && minute <= 59) {
+                        if (!isNaN(hour) && hour >= 0 && hour <= 23) {
+                            isAdd === false ? handleEditSchedule() : handleAddSchedule()
+                        }
+                    }
+                }
                 }
                 className="fixed bottom-4 left-4 right-4 font-semibold p-4 bg-black text-white rounded-full"
             >

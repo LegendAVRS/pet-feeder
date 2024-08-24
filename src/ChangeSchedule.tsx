@@ -8,6 +8,7 @@ import { FEED_SCHEDULE_URL } from "./utils/global";
 import useData from "./hooks/useData";
 import LoadingPage from "./LoadingPage";
 import { toast } from "react-toastify";
+import './noarrow.css'
 
 const ChangeSchedule = () => {
     // Initialize hooks at the top level of the component

@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import NavBar from "./NavBar";
-import { getGramInOunce, getLineChart, getOunces } from "./utils/helpers";
+import { getLineChart, getOunces } from "./utils/helpers";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto"; // ADD THIS
 import DatePicker from "react-datepicker";
 import { FeedHistoryData, WaterHistoryData } from "./utils/types";
-import {
-    FEED_HISTORY_URL,
-    MAX_FOOD_THRESHOLD,
-    WATER_HISTORY_URL,
-} from "./utils/global";
+import { FEED_HISTORY_URL, WATER_HISTORY_URL } from "./utils/global";
 import useData from "./hooks/useData";
 import LoadingPage from "./LoadingPage";
 import { useSettings } from "./SettingsContext";
@@ -18,14 +14,13 @@ const PetStatus = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
     const { inOunce } = useSettings();
-
     const {
         data: feedData,
         refreshData: refreshData1,
         error: error1,
     } = useData<FeedHistoryData>(FEED_HISTORY_URL, {
-        startDate: startDate?.getTime(),
-        endDate: endDate?.getTime(),
+        startDate: Math.floor(startDate.getTime() / 1000),
+        endDate: Math.floor(endDate.getTime() / 1000),
     });
 
     const {
@@ -33,8 +28,8 @@ const PetStatus = () => {
         refreshData: refreshData2,
         error: error2,
     } = useData<WaterHistoryData>(WATER_HISTORY_URL, {
-        startDate: startDate?.getTime(),
-        endDate: endDate?.getTime(),
+        startDate: Math.floor(startDate.getTime() / 1000),
+        endDate: Math.floor(endDate.getTime() / 1000),
     });
 
     useEffect(() => {
@@ -55,24 +50,11 @@ const PetStatus = () => {
         return <LoadingPage></LoadingPage>;
     }
 
-    feedData.feedList = feedData.feedList.map((entry) => ({
-        value: getGramInOunce(inOunce, entry.value),
-        time: entry.time,
-    }));
-
-    waterData.waterList = waterData.waterList.map((entry) => ({
-        value: getOunces(inOunce, entry.value),
-        time: entry.time,
-    }));
-    const foodChart = getLineChart(
-        feedData.feedList,
-        inOunce ? "Oz" : "Grams",
-        getGramInOunce(inOunce, MAX_FOOD_THRESHOLD)
-    );
+    const foodChart = getLineChart(feedData.feedList, "Grams", 1000);
     const waterChart = getLineChart(
         waterData.waterList,
         inOunce ? "Oz" : "ml",
-        getOunces(inOunce, MAX_FOOD_THRESHOLD)
+        getOunces(inOunce, 50)
     );
     return (
         <>
@@ -82,7 +64,7 @@ const PetStatus = () => {
                     <p>From:</p>
                     <DatePicker
                         selected={startDate}
-                        onChange={(date) => setStartDate(date)}
+                        onChange={(date) => setStartDate(date || new Date())}
                         selectsStart
                         startDate={startDate || undefined}
                         endDate={endDate || undefined}
@@ -92,7 +74,7 @@ const PetStatus = () => {
                     <p>to</p>
                     <DatePicker
                         selected={endDate}
-                        onChange={(date) => setEndDate(date)}
+                        onChange={(date) => setEndDate(date || new Date())}
                         selectsEnd
                         startDate={startDate || undefined}
                         endDate={endDate || undefined}
