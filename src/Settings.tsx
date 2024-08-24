@@ -40,7 +40,7 @@ const Settings = () => {
     return (
         <div>
             <NavBar label="Settings"></NavBar>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-4">
                 <div className="flex justify-between px-4">
                     <label
                         htmlFor="noti"
