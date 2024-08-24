@@ -14,6 +14,7 @@ import {
     MAX_HUMIDITY_THRESHOLD,
     MAX_TEMP_THRESHOLD,
     MAX_WATER_THRESHOLD,
+    URL_HEADER,
 } from "./utils/global";
 import { HomeData } from "./utils/types";
 import {
@@ -35,6 +36,16 @@ import { toast } from "react-toastify";
 import { useSettings } from "./SettingsContext";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+// const sensor_data = new EventSource(new URL("sse", URL_HEADER))
+
+// sensor_data.onopen = (ev) => {
+//     console.log("From service worker", ev)
+// }
+// sensor_data.onmessage = console.log
+// sensor_data.onerror = (ev) => {
+//     console.log("From service worker, error: ", ev)
+// }
 
 const MainPage = () => {
     const { data, error, refreshData } = useData<HomeData>(HOME_DATA_URL);
