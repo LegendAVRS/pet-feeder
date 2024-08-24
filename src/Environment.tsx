@@ -3,16 +3,18 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
-import { getLineChart } from "./utils/helpers";
+import { getDegrees, getLineChart } from "./utils/helpers";
 import { EnvironmentData, EnvironmentWrapperData } from "./utils/types";
-import { ENVIRONMENT_HISTORY_URL } from "./utils/global";
+import { ENVIRONMENT_HISTORY_URL, MAX_TEMP_THRESHOLD } from "./utils/global";
 import useData from "./hooks/useData";
 import LoadingPage from "./LoadingPage";
 import NavBar from "./NavBar";
+import { useSettings } from "./SettingsContext";
 
 const Environment = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
+    const { inFahrenheit } = useSettings();
     const {
         data: dataWrapper,
         refreshData,
@@ -34,7 +36,6 @@ const Environment = () => {
         return <LoadingPage></LoadingPage>;
     }
 
-    console.log(dataWrapper);
     let data: EnvironmentData = {
         tempList: [],
         humidList: [],
@@ -53,7 +54,16 @@ const Environment = () => {
         };
     }
 
-    const temperatureChart = getLineChart(data.tempList, "Celsius");
+    data.tempList = data.tempList.map((entry) => ({
+        value: getDegrees(inFahrenheit, entry.value),
+        time: entry.time,
+    }));
+
+    const temperatureChart = getLineChart(
+        data.tempList,
+        inFahrenheit ? "°F" : "°C",
+        getDegrees(inFahrenheit, MAX_TEMP_THRESHOLD)
+    );
     const humidityChart = getLineChart(data.humidList, "%");
 
     return (

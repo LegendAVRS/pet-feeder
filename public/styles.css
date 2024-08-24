@@ -1664,8 +1664,17 @@ html {
   width: 100%;
 }
 
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
 .w-screen {
   width: 100vw;
+}
+
+.min-w-40 {
+  min-width: 10rem;
 }
 
 .max-w-28 {
@@ -1734,20 +1743,20 @@ html {
   gap: 1rem;
 }
 
-.overflow-auto {
-  overflow: auto;
+.gap-8 {
+  gap: 2rem;
 }
 
 .overflow-hidden {
   overflow: hidden;
 }
 
-.overflow-x-auto {
-  overflow-x: auto;
-}
-
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
 }
 
 .overflow-y-scroll {
@@ -2001,8 +2010,4 @@ body {
 :-webkit-scrollbar {
   width: 2px;
   height: 2px;
-}
-
-.Toastify__toast-container {
-  z-index: 200000;
 }

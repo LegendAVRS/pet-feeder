@@ -241,3 +241,15 @@ export const deleteRequest = async (endpoint: string) => {
         console.error("Error:", error);
     }
 };
+
+export const getDegrees = (inFahrenheit: boolean, temp: number) => {
+    return !inFahrenheit ? temp : Math.floor((9 / 5) * temp + 32);
+};
+
+export const getOunces = (inOunce: boolean, water: number) => {
+    return !inOunce ? water : Math.floor(water * 0.033814);
+};
+
+export const getGramInOunce = (inOunce: boolean, food: number) => {
+    return inOunce ? Math.floor(food * 0.035274) : food;
+};

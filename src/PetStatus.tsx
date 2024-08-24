@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import NavBar from "./NavBar";
-import { getLineChart } from "./utils/helpers";
+import { getGramInOunce, getLineChart, getOunces } from "./utils/helpers";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto"; // ADD THIS
 import DatePicker from "react-datepicker";
 import { FeedHistoryData, WaterHistoryData } from "./utils/types";
-import { FEED_HISTORY_URL, WATER_HISTORY_URL } from "./utils/global";
+import {
+    FEED_HISTORY_URL,
+    MAX_FOOD_THRESHOLD,
+    WATER_HISTORY_URL,
+} from "./utils/global";
 import useData from "./hooks/useData";
 import LoadingPage from "./LoadingPage";
+import { useSettings } from "./SettingsContext";
 
 const PetStatus = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
+    const { inOunce } = useSettings();
 
     const {
         data: feedData,
@@ -49,8 +55,25 @@ const PetStatus = () => {
         return <LoadingPage></LoadingPage>;
     }
 
-    const foodChart = getLineChart(feedData.feedList, "Grams", 1000);
-    const waterChart = getLineChart(waterData.waterList, "Milliliters", 1000);
+    feedData.feedList = feedData.feedList.map((entry) => ({
+        value: getGramInOunce(inOunce, entry.value),
+        time: entry.time,
+    }));
+
+    waterData.waterList = waterData.waterList.map((entry) => ({
+        value: getOunces(inOunce, entry.value),
+        time: entry.time,
+    }));
+    const foodChart = getLineChart(
+        feedData.feedList,
+        inOunce ? "Oz" : "Grams",
+        getGramInOunce(inOunce, MAX_FOOD_THRESHOLD)
+    );
+    const waterChart = getLineChart(
+        waterData.waterList,
+        inOunce ? "Oz" : "ml",
+        getOunces(inOunce, MAX_FOOD_THRESHOLD)
+    );
     return (
         <>
             <NavBar label="Pet Status"></NavBar>

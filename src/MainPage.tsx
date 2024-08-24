@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import {
+    getDegrees,
+    getGramInOunce,
+    getOunces,
     getPieChart,
     getTimeString,
     postRequest,
@@ -23,14 +26,19 @@ import {
 import { FOOD_WARNING_THRESHOLD } from "./utils/global";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import useData from "./hooks/useData";
-import { InformationCircleIcon } from "@heroicons/react/16/solid";
+import {
+    Cog6ToothIcon,
+    InformationCircleIcon,
+} from "@heroicons/react/16/solid";
 import LoadingPage from "./LoadingPage";
 import { toast } from "react-toastify";
+import { useSettings } from "./SettingsContext";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const MainPage = () => {
     const { data, error, refreshData } = useData<HomeData>(HOME_DATA_URL);
+    const { inOunce, inFahrenheit } = useSettings();
 
     // useEffect(() => {
     //     const eventSource = new EventSource(URL_HEADER + HOME_DATA_URL);
@@ -64,28 +72,42 @@ const MainPage = () => {
     const lastFeedData = data.prevFeed;
     const lastImgData = data.lastImg;
 
+    data.temp = getDegrees(inFahrenheit, data.temp);
+    data.food = getGramInOunce(inOunce, data.food);
+    data.water = getOunces(inOunce, data.water);
+    data.nextFeed.value = getGramInOunce(inOunce, data.nextFeed.value);
+
+    const maxFood = getGramInOunce(inOunce, MAX_FOOD_THRESHOLD);
+    const maxWater = getOunces(inOunce, MAX_WATER_THRESHOLD);
+    const maxTemp = getDegrees(inFahrenheit, MAX_TEMP_THRESHOLD);
+
+    console.log(data.temp);
+    const warningFood = getGramInOunce(inOunce, FOOD_WARNING_THRESHOLD);
+    const warningWater = getOunces(inOunce, WATER_WARNING_THRESHOLD);
+    const warningTemp = getDegrees(inFahrenheit, TEMPERATURE_WARNING_THRESHOLD);
+
+    const food_label = inOunce ? "Food (oz)" : "Food (grams)";
+    const water_label = inOunce ? "Water (oz)" : "Water (ml)";
+    const temp_label = inFahrenheit ? "Temparature (°F)" : "Temparature (°C)";
+
     const { pieChartData: foodChartData, pieChartOption: foodChartOption } =
         getPieChart(
-            "Food (grams)",
-            [data.food, MAX_FOOD_THRESHOLD - data.food],
-            FOOD_WARNING_THRESHOLD,
+            food_label,
+            [data.food, maxFood - data.food],
+            warningFood,
             false
         );
 
     const { pieChartData: waterChartData, pieChartOption: waterChartOption } =
         getPieChart(
-            "Water (ml)",
-            [data.water, MAX_WATER_THRESHOLD - data.water],
-            WATER_WARNING_THRESHOLD,
+            water_label,
+            [data.water, maxWater - data.water],
+            warningWater,
             false
         );
 
     const { pieChartData: tempChartData, pieChartOption: tempChartOption } =
-        getPieChart(
-            "Temparature (°C)",
-            [data.temp, MAX_TEMP_THRESHOLD - data.temp],
-            TEMPERATURE_WARNING_THRESHOLD
-        );
+        getPieChart(temp_label, [data.temp, maxTemp - data.temp], warningTemp);
 
     const { pieChartData: humidChartData, pieChartOption: humidChartOption } =
         getPieChart(
@@ -108,9 +130,14 @@ const MainPage = () => {
         <>
             <nav className="h-20 p-6 flex items-center justify-between font-bold text-3xl">
                 <h1>Dashboard</h1>
-                <Link to="./status" className="h-full">
-                    <InformationCircleIcon className="h-full"></InformationCircleIcon>
-                </Link>
+                <div className="h-full flex items-center gap-4 ">
+                    <Link to="./settings" className="h-full">
+                        <Cog6ToothIcon className="h-full"></Cog6ToothIcon>
+                    </Link>
+                    <Link to="./status" className="h-full">
+                        <InformationCircleIcon className="h-full"></InformationCircleIcon>
+                    </Link>
+                </div>
             </nav>
             <section className="px-6">
                 <section className="relative aspect-[3/2] rounded-2xl overflow-hidden">
@@ -161,7 +188,7 @@ const MainPage = () => {
                             {nextFeedData?.value !== -1
                                 ? nextFeedData.value
                                 : ""}{" "}
-                            grams
+                            {inOunce ? "oz" : "grams"}
                         </p>
                     </div>
                     <div className="flex items-center justify-between text-md">
@@ -217,7 +244,7 @@ const MainPage = () => {
                             ></Pie>
                         </div>
                     </div>
-                    {data.temp > TEMPERATURE_WARNING_THRESHOLD && (
+                    {data.temp > warningTemp && (
                         <div className="px-4 py-3 rounded-xl border border-red-900 bg-red-100 text-red-900">
                             Temparature is higher than normal
                         </div>
@@ -250,12 +277,12 @@ const MainPage = () => {
                             ></Pie>
                         </div>
                     </div>
-                    {data.food < FOOD_WARNING_THRESHOLD && (
+                    {data.food < warningFood && (
                         <div className="px-4 py-3 rounded-xl border border-red-900 bg-red-100 text-red-900">
                             Food is running out
                         </div>
                     )}
-                    {data.water < WATER_WARNING_THRESHOLD && (
+                    {data.water < warningWater && (
                         <div className="px-4 py-3 rounded-xl border border-red-900 bg-red-100 text-red-900">
                             Water is running out
                         </div>
